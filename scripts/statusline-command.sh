@@ -20,6 +20,8 @@ pr_state=$(echo "$input" | jq -r '.pr.review_state // "open"')
 
 # ── Context window ──────────────────────────────────────────────────────────
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+total_input=$(echo "$input" | jq -r '.context_window.total_input_tokens // empty')
+total_output=$(echo "$input" | jq -r '.context_window.total_output_tokens // empty')
 
 # ── Rate limits (Claude.ai subscription) ───────────────────────────────────
 five_pct=$(echo  "$input" | jq -r '.rate_limits.five_hour.used_percentage  // empty')
@@ -65,6 +67,17 @@ if [ -n "$used_pct" ]; then
   else                              color="$GREEN"
   fi
   parts+=("$(printf "${color}ctx:%d%%${RESET}" "$int_pct")")
+fi
+
+# Session tokens
+if [ -n "$total_input" ] && [ -n "$total_output" ]; then
+  total_tokens=$((total_input + total_output))
+  if [ "$total_tokens" -ge 1000 ]; then
+    tok_str=$(awk "BEGIN {printf \"%.1fk\", $total_tokens/1000}")
+  else
+    tok_str="$total_tokens"
+  fi
+  parts+=("$(printf "${CYAN}tok:%s${RESET}" "$tok_str")")
 fi
 
 # Rate limits
