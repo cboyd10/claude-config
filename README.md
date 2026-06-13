@@ -12,13 +12,13 @@ Public version-controlled Claude Code configuration: custom skills and shell scr
 Clone and symlink into `~/.claude/`:
 
 ```bash
-git clone git@github.com:cboyd19/claude-config.git ~/Documents/repos/claude-config
+git clone git@github.com:cboyd19/claude-config.git <your-path>
+cd <your-path>
 
 # Replace the local directories with symlinks
-rm -rf ~/.claude/skills
-ln -s ~/Documents/repos/claude-config/skills ~/.claude/skills
-
-ln -s ~/Documents/repos/claude-config/scripts ~/.claude/scripts
+rm -rf ~/.claude/skills ~/.claude/scripts
+ln -s "$(pwd)/skills" ~/.claude/skills
+ln -s "$(pwd)/scripts" ~/.claude/scripts
 ```
 
 Then update your `settings.json` to reference the statusline script at its new path:
