@@ -136,6 +136,10 @@ visible and CI starts, and continue implementing on the same branch.
 Optionally remind the user they can remove the worktree after merge:
 `git worktree remove ../<repo>-worktrees/<slug>`.
 
+If any files were created or modified in a `skills/` directory of a `claude-config`
+repo during this implementation, run the `update-ios-instructions` skill as the
+final step.
+
 ## General conduct
 
 - Never create the worktree before Phase 3 confirmation (the single go/no-go counts for
