@@ -42,6 +42,14 @@ Before asking the user anything, gather context yourself:
 Keep orientation output brief — a short "here's what I found" summary (5 lines max),
 then move into Phase 2. Do not dump file listings at the user.
 
+**Reformat mode:** If the user's input is to reformat or rewrite existing planning
+files, treat Phase 1 as reading those files (not the codebase). Skip Phase 2 unless
+there are unresolved questions or corrections to surface — if the existing
+`00-overview.md` has a confirmed alignment summary, that serves as Phase 3 input.
+Start grilling only on what is missing or needs correction in the new format (e.g.,
+new required fields, terminology changes). Then proceed to Phase 3 confirmation as
+normal.
+
 ### Phase 2: GRILL
 
 Follow the `grill-with-docs` skill. Read its SKILL.md now if you have not already.
