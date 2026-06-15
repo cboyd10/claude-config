@@ -34,6 +34,7 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - Cover the failure path, not just the happy path.
 - Each enumerable variant gets its own bullet rather than one compound bullet.
 - ACs define done for the whole story; sub-tasks do not get their own AC sections.
+- Bullets must use **plain text only** — no Jira Wiki Markup (`{{}}`, `*bold*`, `{code}`). Each bullet is pasted as the title of a separate Jira "Acceptance Criteria" issue, and issue titles do not render markup.
 
 ## Original Estimate rules
 

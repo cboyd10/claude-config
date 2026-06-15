@@ -18,14 +18,15 @@ repo=$(echo "$input" | jq -r '.workspace.repo | if . then .owner + "/" + .name e
 pr_num=$(echo "$input" | jq -r '.pr.number // empty')
 pr_state=$(echo "$input" | jq -r '.pr.review_state // "open"')
 
-# ── Context window ──────────────────────────────────────────────────────────
-used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+# ── Session tokens ──────────────────────────────────────────────────────────
 total_input=$(echo "$input" | jq -r '.context_window.total_input_tokens // empty')
 total_output=$(echo "$input" | jq -r '.context_window.total_output_tokens // empty')
 
 # ── Rate limits (Claude.ai subscription) ───────────────────────────────────
-five_pct=$(echo  "$input" | jq -r '.rate_limits.five_hour.used_percentage  // empty')
-week_pct=$(echo  "$input" | jq -r '.rate_limits.seven_day.used_percentage  // empty')
+five_pct=$(echo   "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+five_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at       // empty')
+week_pct=$(echo   "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+week_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at       // empty')
 
 # ── Effort / thinking ───────────────────────────────────────────────────────
 effort=$(echo "$input" | jq -r '.effort.level // empty')
@@ -34,73 +35,100 @@ thinking=$(echo "$input" | jq -r 'if .thinking.enabled then "think" else empty e
 # ── Vim mode ────────────────────────────────────────────────────────────────
 vim_mode=$(echo "$input" | jq -r '.vim.mode // empty')
 
+# ── 5h reset countdown ──────────────────────────────────────────────────────
+five_countdown=""
+if [ -n "$five_reset" ]; then
+  now_epoch=$(date +%s)
+  diff=$(( five_reset - now_epoch ))
+  if [ "$diff" -gt 0 ]; then
+    hrs=$(( diff / 3600 ))
+    mins=$(( (diff % 3600) / 60 ))
+    five_countdown=$(printf "%dh %02dm" "$hrs" "$mins")
+  fi
+fi
+
+# ── 7d pace gate (show only when ahead of linear pace) ──────────────────────
+show_week=false
+if [ -n "$week_pct" ] && [ -n "$week_reset" ]; then
+  now_epoch=$(date +%s)
+  SEVEN_DAYS=604800
+  elapsed=$(( SEVEN_DAYS - (week_reset - now_epoch) ))
+  if [ "$elapsed" -gt 0 ]; then
+    over_pace=$(awk "BEGIN { print ($week_pct > ($elapsed / $SEVEN_DAYS) * 100) ? 1 : 0 }")
+    [ "$over_pace" = "1" ] && show_week=true
+  fi
+fi
+
 # ── Build the output line ───────────────────────────────────────────────────
-# ANSI colours (will be further dimmed by Claude Code's status-line rendering)
-CYAN='\033[0;36m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
+# Colours — Gruvbox Material Hard Dark fall palette
+# ANSI slots: green=#a9b665 magenta=#d3869b red=#ea6962
+# True-color: brick=#bf4b46 orange=#e78a4e burnt=#c0540e steel=#6d8494
+OLIVE='\033[0;32m'
+BRICK='\033[38;2;191;75;70m'
+STEEL='\033[38;2;109;132;148m'
+ORANGE='\033[38;2;231;138;78m'
+BURNT='\033[38;2;192;84;14m'
 RED='\033[0;31m'
-BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
 RESET='\033[0m'
 
 parts=()
 
-# Model
-parts+=("$(printf "${CYAN}%s${RESET}" "$model")")
+# Model — olive green
+parts+=("$(printf "${OLIVE}%s${RESET}" "$model")")
 
-# Directory
-parts+=("$(printf "${BLUE}%s${RESET}" "$short_cwd")")
+# Directory — amber, only when outside the repo root (or not in a git repo)
+if [ -n "$cwd" ]; then
+  git_root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)
+  if [ -z "$git_root" ] || [ "$cwd" != "$git_root" ]; then
+    parts+=("$(printf "${YELLOW}%s${RESET}" "$short_cwd")")
+  fi
+fi
 
-# Repo
+# Repo — red, primary identifier
 if [ -n "$repo" ]; then
   repo_str="$repo"
   [ -n "$pr_num" ] && repo_str="$repo_str PR#${pr_num}(${pr_state})"
-  parts+=("$(printf "${GREEN}%s${RESET}" "$repo_str")")
+  parts+=("$(printf "${BRICK}%s${RESET}" "$repo_str")")
 fi
 
-# Context usage
-if [ -n "$used_pct" ]; then
-  int_pct=$(printf '%.0f' "$used_pct")
-  if   [ "$int_pct" -ge 80 ]; then color="$RED"
-  elif [ "$int_pct" -ge 50 ]; then color="$YELLOW"
-  else                              color="$GREEN"
-  fi
-  parts+=("$(printf "${color}ctx:%d%%${RESET}" "$int_pct")")
-fi
-
-# Session tokens
+# Session tokens — warm cream, secondary info
 if [ -n "$total_input" ] && [ -n "$total_output" ]; then
-  total_tokens=$((total_input + total_output))
+  total_tokens=$(( total_input + total_output ))
   if [ "$total_tokens" -ge 1000 ]; then
     tok_str=$(awk "BEGIN {printf \"%.1fk\", $total_tokens/1000}")
   else
     tok_str="$total_tokens"
   fi
-  parts+=("$(printf "${CYAN}tok:%s${RESET}" "$tok_str")")
+  parts+=("$(printf "${STEEL}tok:%s${RESET}" "$tok_str")")
 fi
 
-# Rate limits
-rate_str=""
+# 5h rate limit + countdown — amber normally, red when ≥80%
 if [ -n "$five_pct" ]; then
-  rate_str="5h:$(printf '%.0f' "$five_pct")%"
-fi
-if [ -n "$week_pct" ]; then
-  [ -n "$rate_str" ] && rate_str="$rate_str "
-  rate_str="${rate_str}7d:$(printf '%.0f' "$week_pct")%"
-fi
-if [ -n "$rate_str" ]; then
-  parts+=("$(printf "${MAGENTA}%s${RESET}" "$rate_str")")
+  five_int=$(printf '%.0f' "$five_pct")
+  rate_str="5h:${five_int}%"
+  [ -n "$five_countdown" ] && rate_str="$rate_str ($five_countdown)"
+  if [ "$five_int" -ge 80 ]; then
+    parts+=("$(printf "${RED}%s${RESET}" "$rate_str")")
+  else
+    parts+=("$(printf "${ORANGE}%s${RESET}" "$rate_str")")
+  fi
 fi
 
-# Effort / thinking
+# 7d rate limit — red, only when over pace
+if $show_week; then
+  week_int=$(printf '%.0f' "$week_pct")
+  parts+=("$(printf "${RED}7d:%d%%${RESET}" "$week_int")")
+fi
+
+# Effort / thinking — burnt orange
 if [ -n "$effort" ]; then
-  parts+=("$(printf "${YELLOW}effort:%s${RESET}" "$effort")")
+  parts+=("$(printf "${BURNT}effort:%s${RESET}" "$effort")")
 elif [ -n "$thinking" ]; then
-  parts+=("$(printf "${YELLOW}thinking${RESET}")")
+  parts+=("$(printf "${BURNT}thinking${RESET}")")
 fi
 
-# Vim mode
+# Vim mode — rose accent
 if [ -n "$vim_mode" ]; then
   parts+=("$(printf "${MAGENTA}[%s]${RESET}" "$vim_mode")")
 fi
