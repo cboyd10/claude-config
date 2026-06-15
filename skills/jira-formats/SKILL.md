@@ -107,7 +107,13 @@ persistence behavior (insert vs update semantics).}
 
 h3. Other Helpful Information
 
-{Optional: relevant SQL, interface definitions, API response shapes.}
+{Reference any existing code the developer should read before implementing —
+name the file, class, or method and note what the new implementation
+preserves, simplifies, or replaces. Then include pseudocode in a {code:java}
+(or appropriate language) block showing the skeleton of the new
+implementation: the key method calls, branching logic, and persistence
+pattern. Junior developers should be able to orient and start coding from
+this section alone.}
 
 h3. Testing
 
