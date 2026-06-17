@@ -24,7 +24,7 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - `-text-` (hyphens) for strikethrough: descoped requirements — keep visible rather than deleting.
 - Cross-reference other issues by key when known, otherwise by planning-file slug.
 - Code blocks: opening tag on its own line, code content indented for the language, closing `{code}` on its own line. Always use a language specifier — never bare `{code}` as an opening tag. Supported types: `java`, `sql`, `yaml`, `javascript`, `js`, `json`, `xml`, `bash`, `sh`, `groovy`, `html`, `css`, `python`. Closing tags are always bare `{code}` regardless of the opening language.
-- Section sub-headings within the description body use Jira heading syntax: `h3. Other Helpful Information`, `h3. Testing`, `h3. Steps to Reproduce`, etc. — never Markdown `###`.
+- Section sub-headings within the description body use Jira heading syntax: `h3. Other Helpful Information`, `h3. Testing`, `h3. Technical Acceptance Criteria`, `h3. Steps to Reproduce`, etc. — never Markdown `###`.
 - **Avoid embedding `{` or `}` inside `{{}}` spans.** Jira parses `{{...}}` (monospace) and macro syntax simultaneously — inner curly braces break the span. The most common offender is Spring property placeholder syntax (`{property.name}`) inside a `{{}}` identifier. When this would occur, either move the whole expression into a `{code}` block, or rephrase in prose: write "the value of {{security.lmsAdminRole}}" rather than "{{APPROLE_{security.lmsAdminRole}}}". Asterisks and underscores inside `{{}}` generally render safely (Jira only triggers bold/italic on whitespace-bounded `*text*` and `_text_`), but when in doubt, prefer a `{code}` block.
 - **No Unicode special characters.** Use only ASCII in issue content. Never use arrows (→, ←, ↑, ↓), em dashes (—), or smart/curly quotes — Jira renders these as `?`. Replace arrows with plain words (`to`, `from`, `then`, `via`); replace em dashes with ` - ` (space-hyphen-space).
 
@@ -75,9 +75,10 @@ h3. Other Helpful Information
 
 h3. Testing
 
-{Optional. Include only when there is helpful information for the developer or QAE
-to manually verify the issue is completed successfully. Omit this section entirely
-if not applicable.}
+{Optional. Include only when there is non-obvious setup or context someone needs
+before they can execute the acceptance criteria — e.g., which DB records to seed,
+which account or role to use, which feature flag to toggle. Omit if the AC steps
+are self-explanatory.}
 
 h3. Technical Acceptance Criteria
 
@@ -130,9 +131,10 @@ this section alone.}
 
 h3. Testing
 
-{Optional. Include only when there is helpful information for the developer or QAE
-to manually verify the issue is completed successfully. Omit this section entirely
-if not applicable.}
+{Optional. Include only when there is non-obvious setup or context someone needs
+before they can execute the acceptance criteria — e.g., which DB records to seed,
+which account or role to use, which feature flag to toggle. Omit if the AC steps
+are self-explanatory.}
 
 h3. Technical Acceptance Criteria
 
@@ -190,8 +192,10 @@ h3. Other Helpful Information
 
 h3. Testing
 
-{Optional. Include only when there is helpful information for the developer or QAE
-to manually verify the bug is resolved. Omit this section entirely if not applicable.}
+{Optional. Include only when there is non-obvious setup or context someone needs
+before they can execute the acceptance criteria — e.g., which DB records to seed,
+which account or role to use, which feature flag to toggle. Omit if the AC steps
+are self-explanatory.}
 
 h3. Technical Acceptance Criteria
 
@@ -236,8 +240,10 @@ h3. Other Helpful Information
 
 h3. Testing
 
-{Optional. Include only when there is helpful information for the developer or QAE
-to manually verify the improvement. Omit this section entirely if not applicable.}
+{Optional. Include only when there is non-obvious setup or context someone needs
+before they can execute the acceptance criteria — e.g., which DB records to seed,
+which account or role to use, which feature flag to toggle. Omit if the AC steps
+are self-explanatory.}
 
 h3. Technical Acceptance Criteria
 
