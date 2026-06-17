@@ -17,16 +17,49 @@ Do NOT write any issue files until BOTH of these have happened in the conversati
 
 If invoked before the gate is passed, run the confirmation step first.
 
+## Collect Jira keys for new issues
+
+Jira key collection happens through the `00-overview.md` issue map table — not via
+a chat prompt.
+
+**Step 1: Write `00-overview.md` first.** Before writing any issue files, write the
+overview file with the full issue map table. Include every parent issue and sub-task
+(sub-tasks as `N.M` numbered rows). Leave the `Jira Slug` column blank for new issues.
+Already-known keys go in immediately.
+
+Issue map table format:
+
+```
+| #   | Jira Slug | Title                               | Type            | Suggested tier | Depends on |
+|-----|-----------|-------------------------------------|-----------------|----------------|------------|
+| 1   |           | Implement HierarchyAccessRepository | Technical Story | Junior         | —          |
+| 1.1 |           | Sub-task: DB layer                  | Sub-task        | Junior         | —          |
+| 1.2 |           | Sub-task: Service layer             | Sub-task        | Junior         | 1.1        |
+| 2   |           | Create enriched security principal  | Technical Story | Junior         | 1          |
+```
+
+**Step 2: Ask the user to fill in slugs.** Prompt: "I've written `00-overview.md`
+with the full issue map. Please create any new issues in Jira and fill in the
+`Jira Slug` column — including sub-tasks — then let me know and I'll write the
+issue files."
+
+**Step 3: Read the table and write files.** Once the user signals the slugs are in,
+read the `00-overview.md` table. Use the slugs for file names (`LDB-1302.md`) and
+all cross-references (Depends on / Is Blocked By) across every file. Never write
+a file with a placeholder slug when the real key is obtainable from the table.
+
 ## Output location and naming
 
 Write to the repo's `.claude/` directory:
 
 ```
 .claude/jira-planning/
-└── {YYYY-MM-DD}_{feature-slug}/
+└── {epic-slug}/                         ← if an epic slug was provided
+    or {YYYY-MM-DD}_{feature-slug}/      ← if no epic
     ├── 00-overview.md
-    ├── 01-{issue-slug}.md
-    ├── 02-{issue-slug}.md
+    ├── PLANNING-HANDOFF.md              ← written by /wrap-up; may exist on resume
+    ├── {ISSUE-SLUG}.md
+    ├── {ISSUE-SLUG}.md
     ├── ...
     └── attachments/
         ├── {issue-slug}-sequence-diagram.mermaid
@@ -35,11 +68,11 @@ Write to the repo's `.claude/` directory:
 
 - One file per Jira issue (story or technical story). Sub-tasks live INSIDE their
   parent issue's file — they are pasted into Jira as sub-tasks of that issue.
-- Number files in recommended creation/dependency order: if story B depends on
-  story A, A gets the lower number.
+- File name is the Jira issue slug only: `LDB-1302.md`. No numbering prefix.
 - Mermaid diagrams and other attachments go in `attachments/`, named
   `{issue-slug}-{diagram-type}.mermaid`, and are referenced from the issue file by
-  relative link. (Jira issue keys aren't known until creation, so use the slug;
+  relative link. (Jira issue keys are collected before writing — see "Collect Jira
+  keys for new issues" above — so the slug is always known at write time.
   the user renames after creating the issue in Jira if they want key-based names.)
 - `.claude/jira-planning/` lives under `.claude/` and should remain out of commits. No need to ask the user about gitignoring.
 
@@ -67,8 +100,8 @@ Repo: {repo name}
 {Explicit exclusions agreed during grilling.}
 
 ## Issue map
-| # | File | Title | Type | Suggested tier | Depends on |
-|---|------|-------|------|----------------|------------|
+| #   | Jira Slug | Title | Type | Suggested tier | Depends on |
+|-----|-----------|-------|------|----------------|------------|
 
 ## Decisions made this session
 {One line each, with links to any ADRs created.}

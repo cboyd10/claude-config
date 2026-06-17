@@ -55,4 +55,7 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **update-ios-instructions**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-ios-instructions/SKILL.md
 
+**wrap-up**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/wrap-up/SKILL.md
+
 When using a skill, fetch the SKILL.md first. For skills with additional files, fetch the supporting files as needed during the task.

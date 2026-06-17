@@ -24,6 +24,12 @@ Phase 3 confirmation is explicitly given.
 
 ### Phase 1: ORIENT
 
+**If invoked as `/plan-with-me resume {slug}`:** Load `.claude/jira-planning/{slug}/PLANNING-HANDOFF.md`. If the handoff lists written issues with `PENDING-N` placeholder slugs, prompt the user to fill in the `Jira Slug` column in `00-overview.md` before continuing. Once the user confirms the slugs are filled, read the table, rename `PENDING-N.md` files to the real slug, and find-and-replace all `PENDING-N` references across every file in the folder. Then resume from the phase recorded in the handoff, working through any "To do on resume" steps first.
+
+**If invoked with no arguments:** Scan `.claude/jira-planning/` for all `PLANNING-HANDOFF.md` files. List each with its feature name, current phase, and date. Ask the user to pick one to resume or say "new" to start fresh. If the user picks one, follow the resume path above.
+
+**If invoked with a feature description:** Start fresh — proceed with the orient steps below.
+
 Before asking the user anything, gather context yourself:
 
 1. Read `.claude/context/CONTEXT.md` (if it exists) — this is the domain glossary.
@@ -72,9 +78,38 @@ When the user signals the grilling is done:
 2. Propose the issue breakdown as a short list: which user stories, which technical
    stories, which need sub-tasks, and rough ordering/dependencies between them.
 3. Ask the user to confirm or correct BOTH the understanding and the breakdown.
-4. Iterate until the user explicitly confirms. Only then proceed to Phase 4.
+4. Iterate until the user confirms the breakdown.
+5. Run the junior-developer completeness check against each confirmed issue in the
+   breakdown. For each gap found, ask one question at a time (same one-at-a-time
+   rule as Phase 2). Derive answers from the codebase where possible; only bring
+   questions to the user when human judgment is required.
+
+   Check each issue for:
+   - **Response shape** — what does the API response look like? Include a TypeScript
+     interface and sample JSON in the issue's `h3. Other Helpful Information` section.
+   - **Pattern to follow** — which existing component, service, or endpoint should
+     the developer model their implementation after?
+   - **Responsibility boundary** — is the developer building the backend endpoint, or
+     just wiring the frontend to one that already exists or will be built by another
+     story? Name the dependency explicitly.
+   - **Mock data strategy** — if the backend dependency isn't built yet, what shape
+     should the mock data take? Point to the interface in the issue.
+   - **Navigation model** — how does the user get to this page, and how do they get
+     back? Name the entry points and any parent links or breadcrumbs that need to be
+     wired.
+   - **External vs internal links** — for every clickable element, is it an in-app
+     route (`routerLink`) or an external URL opening in a new tab?
+
+6. Once the check passes with no open gaps, state that alignment is complete and ask
+   the user for explicit final confirmation before proceeding to Phase 4.
 
 ### Phase 4: WRITE ISSUES
+
+If the confirmed breakdown contains more than 3 parent issues and no epic slug has
+been provided, prompt before writing: "You have {N} parent issues — this is a good
+candidate for a Jira Epic. Do you have an existing epic slug, or should we proceed
+without one?" Use the epic slug as the planning directory name if provided; otherwise
+fall back to date-based naming.
 
 Follow the `plan-to-jira` skill (read its SKILL.md now), which in turn uses the
 templates in `jira-formats`. Write all files, then list what was written with a
