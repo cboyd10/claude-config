@@ -13,7 +13,7 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - **Technical Story** — backend/infrastructure work with no direct UI surface. Title: imperative description of the work.
 - **Bug** — corrects unexpected behavior. Use when grilling a ticket or report about something not working as intended that requires code changes to fix. Title: imperative description of what is being fixed.
 - **Improvement** — non-behavioral enhancement to the codebase or user experience. Use for stylistic changes, small refactors, and other changes that do not affect existing behavior or features. Title: imperative description of what is being improved.
-- **Sub-task** — created under a story only when the story is large enough that implementing it as one PR would be too big. Sub-tasks exist to keep PRs small.
+- **Sub-task** — created under a story only when the story's estimate exceeds 6 hours. Sub-tasks exist to break that work into pieces that can each be completed in 6 hours or less.
 
 ## Formatting conventions (all issue types)
 
@@ -29,6 +29,8 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - **No Unicode special characters.** Use only ASCII in issue content. Never use arrows (→, ←, ↑, ↓), em dashes (—), or smart/curly quotes — Jira renders these as `?`. Replace arrows with plain words (`to`, `from`, `then`, `via`); replace em dashes with ` - ` (space-hyphen-space).
 
 ## Acceptance criteria rules
+
+The `## Acceptance Criteria` section is written for the team's tester (QAE). Their workflow is to deploy a version of the application after a parent issue is completed, stage any scenarios by modifying data in relevant database tables, and then manually test for correct behavior. That means verifying UI functionality (buttons, navigation, display), verifying database state (correct creates, updates, or deletes), or verifying that an endpoint returns the expected response given certain inputs.
 
 - A bulleted list under an `## Acceptance Criteria` heading.
 - Every bullet starts with **"Should"** and describes one independently testable behavior.
@@ -77,6 +79,15 @@ h3. Testing
 to manually verify the issue is completed successfully. Omit this section entirely
 if not applicable.}
 
+h3. Technical Acceptance Criteria
+
+{Bulleted list of developer-verifiable completion criteria — things the tester
+cannot confirm manually. Examples: specific classes or methods exist with correct
+contracts, data transformations produce the right output, edge cases are handled
+in code, DB migration runs cleanly, integration points are wired correctly, a
+scheduled job logs the expected outcome, a service returns the right value for a
+known input. Must use valid Jira Wiki Markup syntax.}
+
 ## Acceptance Criteria
 
 * Should ...
@@ -84,7 +95,7 @@ if not applicable.}
 
 ## Sub-tasks
 
-{Only when the story is too large for one PR — see sizing rules below.}
+{Only when the parent estimate exceeds 6 hours — see sizing rules below.}
 
 ## Attachments
 
@@ -123,6 +134,15 @@ h3. Testing
 to manually verify the issue is completed successfully. Omit this section entirely
 if not applicable.}
 
+h3. Technical Acceptance Criteria
+
+{Bulleted list of developer-verifiable completion criteria — things the tester
+cannot confirm manually. Examples: specific classes or methods exist with correct
+contracts, data transformations produce the right output, edge cases are handled
+in code, DB migration runs cleanly, integration points are wired correctly, a
+scheduled job logs the expected outcome, a service returns the right value for a
+known input. Must use valid Jira Wiki Markup syntax.}
+
 ## Acceptance Criteria
 
 * Should ...
@@ -130,7 +150,7 @@ if not applicable.}
 
 ## Sub-tasks
 
-{Only when needed.}
+{Only when the parent estimate exceeds 6 hours.}
 
 ## Attachments
 
@@ -173,6 +193,15 @@ h3. Testing
 {Optional. Include only when there is helpful information for the developer or QAE
 to manually verify the bug is resolved. Omit this section entirely if not applicable.}
 
+h3. Technical Acceptance Criteria
+
+{Bulleted list of developer-verifiable completion criteria — things the tester
+cannot confirm manually. Examples: specific classes or methods exist with correct
+contracts, data transformations produce the right output, edge cases are handled
+in code, DB migration runs cleanly, integration points are wired correctly, a
+scheduled job logs the expected outcome, a service returns the right value for a
+known input. Must use valid Jira Wiki Markup syntax.}
+
 ## Acceptance Criteria
 
 * Should ...
@@ -180,7 +209,7 @@ to manually verify the bug is resolved. Omit this section entirely if not applic
 
 ## Sub-tasks
 
-{Only when needed.}
+{Only when the parent estimate exceeds 6 hours.}
 
 ## Attachments
 
@@ -210,6 +239,15 @@ h3. Testing
 {Optional. Include only when there is helpful information for the developer or QAE
 to manually verify the improvement. Omit this section entirely if not applicable.}
 
+h3. Technical Acceptance Criteria
+
+{Bulleted list of developer-verifiable completion criteria — things the tester
+cannot confirm manually. Examples: specific classes or methods exist with correct
+contracts, data transformations produce the right output, edge cases are handled
+in code, DB migration runs cleanly, integration points are wired correctly, a
+scheduled job logs the expected outcome, a service returns the right value for a
+known input. Must use valid Jira Wiki Markup syntax.}
+
 ## Acceptance Criteria
 
 * Should ...
@@ -217,7 +255,7 @@ to manually verify the improvement. Omit this section entirely if not applicable
 
 ## Sub-tasks
 
-{Only when needed.}
+{Only when the parent estimate exceeds 6 hours.}
 
 ## Attachments
 
@@ -243,11 +281,12 @@ Wiki Markup syntax.}
 
 ## Sub-task sizing rules
 
-- Split a story into sub-tasks only when the total changes are too large for one reviewable PR.
-- For stories that touch one concern across one or two files, keep it as one PR.
-- The layer-by-layer split (DB → service → controller → Angular) is the default pattern for stories that span all layers end-to-end.
-- A sub-task should be implementable and reviewable as a single PR of manageable size.
-- Order sub-tasks so each is testable/demonstrable when merged (mock or stub the not-yet-built layers above).
+- A parent issue estimated at 6 hours or less does not need sub-tasks.
+- Split a parent issue into sub-tasks only when its estimate exceeds 6 hours.
+- Each sub-task must be sized to 6 hours or less (and must still be divisible by 3 per the estimate rules).
+- Parent issues must represent a complete vertical slice — they should cover all relevant layers (DB, service, controller, Angular) for a self-contained, testable capability. Do not split work horizontally across parent issues by layer; that creates integration gaps and makes behavior hard to verify until all pieces land.
+- The layer-by-layer ordering (DB first, then service, then controller, then Angular) applies to sub-tasks within a vertical-slice parent issue — it is the implementation sequence, not the issue decomposition strategy.
+- Order sub-tasks so each is testable or demonstrable when merged (mock or stub the not-yet-built layers above).
 
 ## Tier calibration
 
