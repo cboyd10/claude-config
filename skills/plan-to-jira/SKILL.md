@@ -61,10 +61,17 @@ Write to the repo's `.claude/` directory:
     ├── {ISSUE-SLUG}.md
     ├── {ISSUE-SLUG}.md
     ├── ...
-    └── attachments/
-        ├── {issue-slug}-sequence-diagram.mermaid
+    ├── attachments/                     ← Mermaid diagrams, sequence diagrams referenced from issue files
+    │   ├── {issue-slug}-sequence-diagram.mermaid
+    │   └── ...
+    └── docs/                            ← Planning-support reference documents (UI specs, API references, etc.)
+        ├── {feature}-ui-design.md
         └── ...
 ```
+
+- Move any planning-support reference documents created during the session (UI specs,
+  API option class references, data dictionaries, etc.) into `docs/`. Do not mix them
+  with issue files or mermaid diagrams.
 
 - One file per Jira issue (story or technical story). Sub-tasks live INSIDE their
   parent issue's file — they are pasted into Jira as sub-tasks of that issue.
