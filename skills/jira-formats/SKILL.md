@@ -17,6 +17,7 @@ Templates and conventions derived from the team's real issues. Match them exactl
 
 ## Formatting conventions (all issue types)
 
+- **No Unicode special characters.** Use only ASCII in issue content. Never use arrows (→, ←, ↑, ↓), em dashes (—), or smart/curly quotes — Jira renders these as `?`. Replace arrows with plain words (`to`, `from`, `then`, `via`); replace em dashes with ` - ` (space-hyphen-space).
 - All description field content **MUST** use valid Jira Wiki Markup syntax — not Markdown.
 - `*text*` (single asterisks) for bold: UI elements, menu items, routes, endpoint paths.
 - `{{text}}` (double curly braces) for monospace/inline code: code identifiers, DB objects, naming conventions.
@@ -26,7 +27,6 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - Code blocks: opening tag on its own line, code content indented for the language, closing `{code}` on its own line. Always use a language specifier — never bare `{code}` as an opening tag. Supported types: `java`, `sql`, `yaml`, `javascript`, `js`, `json`, `xml`, `bash`, `sh`, `groovy`, `html`, `css`, `python`. Closing tags are always bare `{code}` regardless of the opening language.
 - Section sub-headings within the description body use Jira heading syntax: `h3. Other Helpful Information`, `h3. Testing`, `h3. Technical Acceptance Criteria`, `h3. Steps to Reproduce`, etc. — never Markdown `###`.
 - **Avoid embedding `{` or `}` inside `{{}}` spans.** Jira parses `{{...}}` (monospace) and macro syntax simultaneously — inner curly braces break the span. The most common offender is Spring property placeholder syntax (`{property.name}`) inside a `{{}}` identifier. When this would occur, either move the whole expression into a `{code}` block, or rephrase in prose: write "the value of {{security.lmsAdminRole}}" rather than "{{APPROLE_{security.lmsAdminRole}}}". Asterisks and underscores inside `{{}}` generally render safely (Jira only triggers bold/italic on whitespace-bounded `*text*` and `_text_`), but when in doubt, prefer a `{code}` block.
-- **No Unicode special characters.** Use only ASCII in issue content. Never use arrows (→, ←, ↑, ↓), em dashes (—), or smart/curly quotes — Jira renders these as `?`. Replace arrows with plain words (`to`, `from`, `then`, `via`); replace em dashes with ` - ` (space-hyphen-space).
 
 ## Acceptance criteria rules
 
