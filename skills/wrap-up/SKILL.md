@@ -50,7 +50,9 @@ Write `PLANNING-HANDOFF.md` into the current planning folder using this structur
 # Planning Handoff — {feature-slug or epic-slug}
 
 **Date wrapped:** {YYYY-MM-DD}
-**Phase at wrap-up:** {e.g., "Phase 2: GRILL — open questions remain" or "Phase 3: CONFIRM ALIGNMENT — junior dev check in progress"}
+**Resume command:** `/plan-with-me resume {slug-or-folder-name}`
+**Skill chain:** plan-with-me > plan-to-jira > jira-formats (read all before writing any files)
+**Wrapped at phase:** Phase {N} - {name, e.g., "4: WRITE ISSUES" or "2: GRILL"}
 **Epic:** {slug or "none"}
 **Planning folder:** {relative path, e.g., .claude/jira-planning/LDB-1200/}
 
@@ -79,9 +81,10 @@ one-line note on what each was used for.}
 - `/home/user/repos/other-repo/` — enrollment sync pattern being modeled after
 
 ## Issues written
-| PENDING-N | Title | File |
-|-----------|-------|------|
-| PENDING-1 | {title} | PENDING-1.md |
+| PENDING-N | Title | File | Notes |
+|-----------|-------|------|-------|
+| PENDING-1 | {parent title} | PENDING-1.md | — |
+| PENDING-2 | {sub-task title} | PENDING-1.md | Sub-task of PENDING-1, header `### PENDING-2. {summary}` |
 
 ## Issues pending (not yet written)
 {Titles of issues in the confirmed breakdown that have not been written yet. These

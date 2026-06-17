@@ -24,7 +24,7 @@ Phase 3 confirmation is explicitly given.
 
 ### Phase 1: ORIENT
 
-**If invoked as `/plan-with-me resume {slug}`:** Load `.claude/jira-planning/{slug}/PLANNING-HANDOFF.md`. If the handoff lists written issues with `PENDING-N` placeholder slugs, prompt the user to fill in the `Jira Slug` column in `00-overview.md` before continuing. Once the user confirms the slugs are filled, read the table, rename `PENDING-N.md` files to the real slug, and find-and-replace all `PENDING-N` references across every file in the folder. Then resume from the phase recorded in the handoff, working through any "To do on resume" steps first.
+**If invoked as `/plan-with-me resume {slug}`:** Load `.claude/jira-planning/{slug}/PLANNING-HANDOFF.md`. If the handoff lists written issues with `PENDING-N` placeholder slugs, prompt the user to fill in the `Jira Slug` column in `00-overview.md` before continuing. Once the user confirms the slugs are filled, read the table, rename `PENDING-N.md` files to the real slug, and find-and-replace all `PENDING-N` references across every file in the folder. Then resume from the phase recorded in the handoff, working through any "To do on resume" steps first. Before writing or editing any issue files: read `plan-to-jira/SKILL.md` and `jira-formats/SKILL.md` in full — do not rely on memory of those formats.
 
 **If invoked with no arguments:** Scan `.claude/jira-planning/` for all `PLANNING-HANDOFF.md` files. List each with its feature name, current phase, and date. Ask the user to pick one to resume or say "new" to start fresh. If the user picks one, follow the resume path above.
 

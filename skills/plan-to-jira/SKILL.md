@@ -45,8 +45,11 @@ issue files."
 
 **Step 3: Read the table and write files.** Once the user signals the slugs are in,
 read the `00-overview.md` table. Use the slugs for file names (`LDB-1302.md`) and
-all cross-references (Depends on / Is Blocked By) across every file. Never write
-a file with a placeholder slug when the real key is obtainable from the table.
+all cross-references (Depends on / Is Blocked By) across every file. For sub-tasks,
+replace the `PENDING-N` in the sub-task header (`### PENDING-6. Summary`) with the
+real key from the sub-task row in the table (`### LDB-1332. Summary`). Never write
+a file or header with a placeholder slug when the real key is obtainable from the
+table.
 
 ## Output location and naming
 

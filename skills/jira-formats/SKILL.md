@@ -273,7 +273,7 @@ known input. Must use valid Jira Wiki Markup syntax.}
 Inside the parent issue file, under `## Sub-tasks`:
 
 ```markdown
-### {N}. {One-sentence summary of the sub-task}
+### {PENDING-N}. {One-sentence summary of the sub-task}
 
 **Original Estimate:** {hours, divisible by 3}
 
@@ -284,6 +284,8 @@ include (left for a later sub-task), and what it can rely on from earlier
 sub-tasks. Name concrete files/classes/tables where known. Must use valid Jira
 Wiki Markup syntax.}
 ```
+
+Sub-task `PENDING-N` numbers continue the same sequence used for parent issues in the session — do not restart at 1. On slug fill-in, replace `PENDING-N` in the header with the real Jira key; keep the period and summary unchanged. Result: `### LDB-1332. {summary}`.
 
 ## Sub-task sizing rules
 
