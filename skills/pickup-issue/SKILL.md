@@ -1,6 +1,6 @@
 ---
 name: pickup-issue
-description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a branch named after the slug, then implements (using TDD for Angular/Spring Boot code changes). Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
+description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a Git worktree (sibling directory) named after the slug, then implements (using TDD for Angular/Spring Boot code changes). Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
 ---
 
 # pickup-issue
@@ -12,11 +12,11 @@ the issue summary and description.
 
 ## Workflow
 
-Run these phases strictly in order. Do not create a branch or write any code until
+Run these phases strictly in order. Do not create a worktree or write any code until
 Phase 3 alignment is explicitly confirmed by the user.
 
 ```
-1. ORIENT  →  2. GRILL  →  3. CONFIRM ALIGNMENT  →  4. BRANCH  →  5. IMPLEMENT  →  6. DOCS
+1. ORIENT  →  2. GRILL  →  3. CONFIRM ALIGNMENT  →  4. WORKTREE  →  5. IMPLEMENT  →  6. DOCS
 ```
 
 ### Phase 1: ORIENT
@@ -54,21 +54,27 @@ Summarize the shared understanding:
 3. Whether TDD applies: **yes** if the change includes Angular or Spring Boot
    production code; **no** if the change is config, deployment, SQL, or docs only.
 4. What is explicitly out of scope.
-5. The branch name (always the exact Jira slug, e.g. `LNES-129`) and the base
-   branch (default: `master`; use any other branch the user specifies).
+5. The worktree path (`../<repo>-worktrees/{JIRA-SLUG}/`), branch name (always
+   the exact Jira slug, e.g. `LNES-129`), and base branch (default: `master`;
+   use any other branch the user specifies).
 
 Ask the user to confirm. Iterate until explicit confirmation. Only then proceed.
 
-### Phase 4: BRANCH
+### Phase 4: WORKTREE
 
-Create the branch:
+Create the worktree and branch (sibling directory keeps the main working tree
+clean and allows concurrent agents to work different issues at once):
 
 ```bash
-git checkout {base-branch} && git pull && git checkout -b {JIRA-SLUG}
+git fetch origin
+git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} origin/{base-branch}
 ```
 
+Then work inside the worktree for all subsequent implementation. If the worktree
+path already exists (e.g. a resumed pickup), reuse it instead of recreating.
+
 Default base branch is `master`. If the user named a different base branch during
-the session, use that instead.
+the session, substitute accordingly.
 
 ### Phase 5: IMPLEMENT
 
@@ -93,13 +99,15 @@ After implementation:
 
 1. Ensure `.claude/context/CONTEXT.md` reflects any new domain terms introduced.
 2. Write any ADRs that were deferred during grilling.
-3. Confirm the branch is in a reviewable state: tests pass, static analysis clean,
-   no uncommitted changes.
+3. Confirm the worktree is in a reviewable state: tests pass, static analysis
+   clean, no uncommitted changes. Optionally remind the user they can remove the
+   worktree after the branch is merged:
+   `git worktree remove ../<repo>-worktrees/{JIRA-SLUG}`.
 
 ## General conduct
 
 - Never start Phase 4 without explicit alignment confirmation from Phase 3.
 - The branch name is always the exact Jira slug — no modification, no lowercasing.
 - If the issue scope is large enough to span multiple PRs, say so in Phase 3 and
-  propose splitting before branching.
+  propose splitting before creating the worktree.
 - The user can jump phases backward at any time. Honor it, then resume.
