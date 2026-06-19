@@ -121,9 +121,15 @@ visible and CI starts, and continue implementing on the same branch.
    body MUST contain `Closes #<number>` so merging to `main` auto-closes the issue.
 2. **Comment on the issue** linking the PR.
 3. Continue implementing, pushing commits to the branch.
-4. **When the slice is complete and tests/checks pass**, promote the PR from draft to
-   **ready for review**. Via MCP, swap labels: remove `in-progress`, add `in-review`.
-5. Leave merging to the user. On merge to `main`, GitHub auto-closes the issue via the
+4. **When the slice is complete**, wait for CI to pass before promoting:
+   - Use `mcp__github__actions_list` to find the latest workflow run for the branch.
+   - Poll `mcp__github__actions_get` until the run reaches a terminal state
+     (`completed`, `failure`, `cancelled`).
+   - On failure, diagnose and fix: push a corrective commit, then re-poll the new run.
+   - Do not promote until the run concludes with `conclusion: success`.
+5. **Once CI is green**, promote the PR from draft to **ready for review**. Via MCP,
+   swap labels: remove `in-progress`, add `in-review`.
+6. Leave merging to the user. On merge to `main`, GitHub auto-closes the issue via the
    `Closes #<number>` link — no manual close step.
 
 ### Phase 7: DOCS
