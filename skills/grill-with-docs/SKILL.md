@@ -87,18 +87,25 @@ multiple bounded contexts — follow the map to the right `CONTEXT.md`.
   in this skill directory.
 - If no `.claude/context/CONTEXT.md` exists, create it when the first term is resolved — not before.
 
-### ADRs — architectural decision records
+### ADRs — record decisions, don't write ADRs
 
-Offer to write an ADR in `.claude/context/adr/` only when ALL three are true:
+Do not write ADRs during grilling. Planning-time ADRs prescribe code that doesn't
+exist yet and go stale on contact with implementation. In work repos, ADRs are
+written post-implementation by the `update-docs` skill, from the concrete merged
+code (format and lifecycle per `docs-formats/ADR-FORMAT.md`).
 
-1. **Hard to reverse** — changing the decision later has real cost.
-2. **Surprising without context** — a future reader would ask "why this way?"
-3. **A real trade-off** — genuine alternatives existed and one was chosen for
-   specific reasons.
+When a decision made during grilling passes the ADR test — (1) hard to reverse,
+(2) surprising without context, (3) a real trade-off — record it in the planning
+session's `OVERVIEW.md` under `## Decisions made this session` (format per
+`plan-to-jira`): what was decided, the alternatives rejected and why, and the
+issue slugs it touches. That entry is the rationale source `update-docs` harvests
+when it writes the ADR later. In sessions with no planning folder (e.g. pickup
+flows), the decision context lives in the Jira issue text itself.
 
-If any is missing, skip it. Format per `ADR-FORMAT.md` in this skill directory.
-Create `.claude/context/adr/` lazily, when the first ADR is needed. Number sequentially:
-`0001-short-slug.md`.
+Exception: orchestrating skills that explicitly instruct inline ADR writing for
+their own flows (the personal pickup/planning skills, deconstruct's
+architecture-seam exception) still follow their own SKILL.md instructions, using
+`docs-formats/ADR-FORMAT.md`.
 
 ## Tone
 

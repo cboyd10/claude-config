@@ -23,7 +23,8 @@ Phase 3 alignment is explicitly confirmed by the user.
 
 Before asking the user anything, gather context:
 
-1. Read `.claude/context/CONTEXT.md` and `.claude/context/adr/` if they exist.
+1. Read `.claude/context/CONTEXT.md` and `docs/adr/` (plus any legacy
+   `.claude/context/adr/`) if they exist.
 2. Check for `issues.csv` in the relevant planning directory (`.claude/jira-planning/`).
    If found, read it for context on the issue being picked up and its dependencies
    before exploring the codebase.
@@ -45,8 +46,8 @@ dump file listings at the user.
 Follow the `grill-with-docs` skill. Read its SKILL.md now if you have not already.
 
 Goal: shared understanding of exactly what needs to change, why, what is out of
-scope, and what could go wrong. Update `.claude/context/CONTEXT.md` and offer ADRs
-inline as terms and decisions resolve.
+scope, and what could go wrong. Update `.claude/context/CONTEXT.md` as terms
+resolve. Do not write ADRs or product docs — see Phase 6.
 
 The grilling is done only when the user explicitly confirms (e.g. "we're aligned",
 "let's do it", "that's everything"). Never declare alignment yourself.
@@ -104,7 +105,12 @@ check (e.g. `./gradlew clean test`, Helm dry-run, static analysis).
 After implementation:
 
 1. Ensure `.claude/context/CONTEXT.md` reflects any new domain terms introduced.
-2. Write any ADRs that were deferred during grilling.
+2. Do NOT write ADRs or product documentation (root `README.md`, `docs/`, module
+   READMEs). Those are written by the lead's `update-docs` runs, which detect
+   this issue's changes from the merged commits. If the work embodied a decision
+   that is hard to reverse, surprising without context, and a real trade-off,
+   say so in the session wrap-up so the user can flag it for the next
+   `update-docs` run.
 3. Confirm the worktree is in a reviewable state: tests pass, static analysis
    clean, no uncommitted changes. Optionally remind the user they can remove the
    worktree after the branch is merged:

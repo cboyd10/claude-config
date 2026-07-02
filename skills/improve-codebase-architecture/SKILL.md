@@ -1,6 +1,6 @@
 ---
 name: improve-codebase-architecture
-description: Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in .claude/context/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable. Tailored for Angular client / Spring Boot back end / SQL stacks.
+description: Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable. Tailored for Angular client / Spring Boot back end / SQL stacks.
 ---
 
 # Improve Codebase Architecture
@@ -59,7 +59,7 @@ When you state how something currently works, cite the file. If the user's descr
 
 ### 1. Explore
 
-Read the project's domain glossary (`.claude/context/CONTEXT.md`) and any ADRs in `.claude/context/adr/` first.
+Read the project's domain glossary (`.claude/context/CONTEXT.md`) and any ADRs in `docs/adr/` (or legacy `.claude/context/adr/`) first.
 
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Require
 the report contract in [../grill-with-docs/EXPLORATION.md](../grill-with-docs/EXPLORATION.md). Don't follow rigid heuristics — explore organically and note where you experience friction:
@@ -105,5 +105,5 @@ Side effects happen inline as decisions crystallize:
 
 - **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `.claude/context/CONTEXT.md` — same discipline as `/grill-with-docs` (see [CONTEXT-FORMAT.md](../grill-with-docs/CONTEXT-FORMAT.md)). Create the file lazily if it doesn't exist.
 - **Sharpening a fuzzy term during the conversation?** Update `.claude/context/CONTEXT.md` right there.
-- **User rejects the candidate with a load-bearing reason?** Offer an ADR in `.claude/context/adr/`, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones. See [ADR-FORMAT.md](../grill-with-docs/ADR-FORMAT.md).
+- **User rejects the candidate with a load-bearing reason?** Offer an ADR in `docs/adr/`, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones. See [ADR-FORMAT.md](../docs-formats/ADR-FORMAT.md).
 - **Want to explore alternative interfaces for the deepened module?** See [INTERFACE-DESIGN.md](INTERFACE-DESIGN.md).

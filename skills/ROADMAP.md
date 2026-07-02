@@ -3,23 +3,6 @@
 Seed notes for future skill-building sessions. Each entry gets its own
 grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
-## 2. documentation formats + keep-docs-updated
-
-Create/maintain repo documentation so a brand-new junior dev with little
-experience can build product knowledge quickly. Two-part shape, mirroring
-jira-formats + plan-to-jira: a formats/conventions skill and a doing skill.
-
-User's framing, verbatim: "I'd like to explore a documentation format (e.g.,
-what goes in the README.md, what goes in a root docs folder, what goes in
-service/client README.md or docs folder) and how the documentation relates and
-builds an easy to navigate picture a brand new junior dev with little
-experience could use to gain product knowledge quickly."
-
-- Decide the layered map: root README vs `docs/` vs per-service/client README
-  vs `.claude/context/` (CONTEXT.md/ADRs already have owners — don't overlap).
-- "Keep up to date" mode: detect drift between docs and code; "create" mode:
-  bootstrap docs where none exist.
-
 ## 3. iOS-chat grilling variant
 
 A grill-with-docs adaptation for plain Claude chat on iOS (NOT the iOS Claude
@@ -67,7 +50,5 @@ per EXPLORATION.md to trace behavior without flooding main-session context.
 
 ## Pending chore
 
-- Regenerated `ios-instructions.md` (now includes `review-pr`) needs commit +
-  push to `cboyd10/claude-config` main (user does this manually). The repo copy
-  is also missing `address-pr-comments` and the new `review-pr` skill directory,
-  plus the `bitbucket_pr_to_review` script's home if it should live in the repo.
+- Decide whether the `bitbucket_pr_to_review` script (currently
+  `~/.local/bin/`) should live in this repo (e.g. under `scripts/`).

@@ -92,7 +92,12 @@ Epic: {epic slug, if applicable}
 {Explicit exclusions agreed during grilling.}
 
 ## Decisions made this session
-{One line each, with links to any ADRs created.}
+{One entry per decision. Do NOT write ADRs during planning — this section is the
+rationale source the update-docs skill harvests when it writes ADRs
+post-implementation, so make each entry self-contained:}
+
+- **{What was decided}** — {alternatives rejected and why, in one or two
+  sentences}. Issues: {the slugs / PENDING-Ns it touches}.
 
 ## Issues
 {One line per issue: title (slug when known), suggested assignee tier, and

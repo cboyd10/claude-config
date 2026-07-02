@@ -5,16 +5,24 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 
 ### Available skills:
 
+**address-pr-comments**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/address-pr-comments/SKILL.md
+
 **deconstruct**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/deconstruct/SKILL.md
+
+**docs-formats**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/ADR-FORMAT.md
 
 **github-formats**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/github-formats/SKILL.md
 
 **grill-with-docs**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/grill-with-docs/SKILL.md
-- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/grill-with-docs/ADR-FORMAT.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/grill-with-docs/CONTEXT-FORMAT.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/grill-with-docs/EXPLORATION.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/grill-with-docs/STACK-WORK.md
 
 **improve-codebase-architecture**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/improve-codebase-architecture/SKILL.md
@@ -44,6 +52,11 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **plan-with-me-personal**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/plan-with-me-personal/SKILL.md
 
+**review-pr**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/REVIEW-EXPECTATIONS.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/SECURITY-CHECKLIST.md
+
 **tdd**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/deep-modules.md
@@ -51,6 +64,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/mocking.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/refactoring.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/tests.md
+
+**update-docs**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-docs/SKILL.md
 
 **update-ios-instructions**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-ios-instructions/SKILL.md

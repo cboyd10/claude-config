@@ -5,7 +5,7 @@ description: Break an oversized plan or scope into smaller, self-contained piece
 
 Deconstruct an oversized scope into smaller pieces that can each be grilled and built in their own Claude Code session. You are a seam-finder, not a planner: find the cut lines, save them, and stop. The deep design work happens later, per piece, in grill-with-docs.
 
-Read any existing `.claude/context/CONTEXT.md`, `.claude/context/CONTEXT-MAP.md`, and `.claude/context/adr/` first — they tell you where the seams already are.
+Read any existing `.claude/context/CONTEXT.md`, `.claude/context/CONTEXT-MAP.md`, and ADRs (`docs/adr/` in work repos, `.claude/context/adr/` in personal repos) first — they tell you where the seams already are.
 
 ## 1. Gate: should this be deconstructed at all?
 
@@ -80,9 +80,9 @@ Each handoff doc seeds one fresh grill-with-docs session. Keep it lightweight by
 
 ## 6. ADRs: only for real architecture
 
-Do **not** write an ADR for the split itself. "We divided this work into three pieces and grill them A→B→C" is a planning decision — it lives in the manifest under `.claude/deconstructions/`, not in the project's shared `.claude/context/adr/`.
+Do **not** write an ADR for the split itself. "We divided this work into three pieces and grill them A→B→C" is a planning decision — it lives in the manifest under `.claude/deconstructions/`, not in the project's shared ADR directory.
 
-The one exception: if the seam-finding grill surfaces a genuine architectural decision — non-obvious, with real trade-offs, about the system itself (e.g. "billing and ordering must remain separate contexts") — record that as an ADR inline, exactly as grill-with-docs would, using the format in `ADR-FORMAT.md`. Architecture decisions earn ADRs; workflow ephemera do not.
+The one exception: if the seam-finding grill surfaces a genuine architectural decision — non-obvious, with real trade-offs, about the system itself (e.g. "billing and ordering must remain separate contexts") — record that as an ADR inline, using the format in `docs-formats/ADR-FORMAT.md`. Architecture decisions earn ADRs; workflow ephemera do not.
 
 ## Done
 
