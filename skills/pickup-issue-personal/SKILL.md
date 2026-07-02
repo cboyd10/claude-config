@@ -41,7 +41,8 @@ alignment is confirmed.
 2. Read `.claude/context/CONTEXT.md` and `.claude/context/adr/` if they exist.
 3. Explore the code the issue most likely touches. Stack-agnostic: infer patterns from
    the repo. Verify the issue's Context claims against the actual code; surface any
-   contradiction immediately.
+   contradiction immediately. Delegate per `grill-with-docs/EXPLORATION.md` — one
+   Explore agent, its report format, no persistence.
 4. Build an internal picture: what exists, what changes, what is ambiguous.
 
 Output a brief orientation summary (5 lines max), then move to Phase 2.
@@ -66,8 +67,8 @@ switching to grilling") and run the full session. Guessing wrong autonomously co
 more than one extra question. When you downgrade, note it; it's useful retrospective
 signal that the planning under-specified the issue.
 
-Apply `grill-with-docs`'s general discipline (ignore its Oracle/Spring Boot/Angular
-stack section — use this project's actual stack). Update CONTEXT.md / offer ADRs inline.
+Apply `grill-with-docs`'s general discipline (its stack guidance lives in
+`STACK-WORK.md`, which does not apply to personal projects). Update CONTEXT.md / offer ADRs inline.
 **Pull before writing any doc** to shrink the concurrent-agent collision window.
 
 ### Phase 3: CONFIRM ALIGNMENT
@@ -122,9 +123,9 @@ visible and CI starts, and continue implementing on the same branch.
 2. **Comment on the issue** linking the PR.
 3. Continue implementing, pushing commits to the branch.
 4. **When the slice is complete**, wait for CI to pass before promoting:
-   - Use `mcp__github__actions_list` to find the latest workflow run for the branch.
-   - Poll `mcp__github__actions_get` until the run reaches a terminal state
-     (`completed`, `failure`, `cancelled`).
+   - Using the GitHub MCP's workflow-run tools (discover the exact tool names from
+     the connected MCP — do not guess), find the latest run for the branch and poll
+     until it reaches a terminal state (`completed`, `failure`, `cancelled`).
    - On failure, diagnose and fix: push a corrective commit, then re-poll the new run.
    - Do not promote until the run concludes with `conclusion: success`.
 5. **Once CI is green**, promote the PR from draft to **ready for review**. Via MCP,

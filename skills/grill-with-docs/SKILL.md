@@ -11,7 +11,17 @@ between decisions one by one.
 
 ## Scope gate
 
-If the plan smells too big for one session — it spans multiple bounded contexts, or bundles several independent sub-goals that don't share a resolved decision — stop grilling and recommend `/deconstruct` to split it into separately-grillable pieces first. Don't try to grill an oversized scope to completion in one sitting.
+Stop grilling and recommend `/deconstruct` when ANY of these holds:
+
+- The scope spans more than one bounded context (per `.claude/context/CONTEXT-MAP.md`
+  when it exists).
+- The scope bundles independent sub-goals that share no resolved design decision.
+- The running effort estimate exceeds **72 hours** of implementation work. Produce a
+  rough total at ORIENT time (for work repos, junior-developer hours per
+  `jira-formats` estimation rules) and revise it as grilling reveals scope — re-check
+  the gate whenever the number grows.
+
+Don't try to grill an oversized scope to completion in one sitting.
 
 ## Core rules
 
@@ -21,36 +31,26 @@ If the plan smells too big for one session — it spans multiple bounded context
    The user decides; you advise.
 3. **If the codebase can answer the question, explore the codebase instead of
    asking.** Only bring questions to the user that require human judgment or domain
-   knowledge the repo doesn't contain.
+   knowledge the repo doesn't contain. Follow `EXPLORATION.md` in this skill
+   directory: if you can name the exact file, read it inline; if you'd have to
+   search, delegate to one Explore agent and require its report format. When you
+   state how something currently works, cite the file you saw it in. If the user's
+   description contradicts the code, surface the contradiction immediately:
+   "You said X, but `MasterService.java` does Y — which is right?"
 4. **Track open branches.** When an answer spawns new questions, note them and resolve
    them in dependency order — don't lose threads.
 5. **Stop when the user says the grilling is done**, not before and not on your own
    judgment.
+6. **Re-ground periodically.** After every 10th question, and after returning from
+   any exploration detour, re-read the Core rules section of this file before
+   asking the next question. Long sessions decay discipline; this restores it.
 
-## Stack-aware exploration (Oracle / Spring Boot / Angular)
+## Stack guidance
 
-When exploring before or during grilling, ground yourself in:
-
-- **Schema truth**: Liquibase/Flyway changelogs or DDL scripts; Oracle-specific
-  constructs (sequences, views like `*_VIEW`, synonyms, schema-qualified names).
-  When a new status or category value is proposed, check Oracle DDL scripts for
-  `CHECK` constraints on the relevant column — adding a new value requires a
-  migration to drop and recreate the constraint (see `skipjack-banner-sql/scripts/`
-  for the established pattern).
-- **Data model**: JPA entities, `@Table`/`@Column` mappings, relationships, and any
-  mismatch between entities and the actual schema.
-- **Back end patterns**: how this repo structures controllers → services →
-  repositories, DTO conventions, exception handling, scheduled jobs
-  (`@Scheduled`), external API clients (e.g. Canvas API client patterns).
-- **Front end patterns**: Angular module/route structure, component naming, shared
-  table/filter/pagination components that already exist, HTTP service patterns.
-- **Existing conventions over invention**: if the repo already has a pattern for the
-  thing being planned (paginated endpoints, error display, hourly jobs), the default
-  recommendation is to follow it. Deviating is a decision worth surfacing.
-
-When you state how something currently works, cite the file you saw it in. If the
-user's description contradicts the code, surface the contradiction immediately:
-"You said X, but `MasterService.java` does Y — which is right?"
+Stack-specific exploration guidance lives in supporting files (currently
+`STACK-WORK.md` for the Oracle/Spring Boot/Angular work stack). Orchestrating
+skills say which to read. If invoked directly on a work-stack repo, read
+`STACK-WORK.md` now.
 
 ## Question priorities
 

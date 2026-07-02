@@ -24,12 +24,18 @@ Phase 3 alignment is explicitly confirmed by the user.
 Before asking the user anything, gather context:
 
 1. Read `.claude/context/CONTEXT.md` and `.claude/context/adr/` if they exist.
-2. Explore the code the issue most likely touches — data model, service layer, Helm
-   charts, Angular components, whatever the description points at. For deployment or
+2. Check for `issues.csv` in the relevant planning directory (`.claude/jira-planning/`).
+   If found, read it for context on the issue being picked up and its dependencies
+   before exploring the codebase.
+3. Explore the code the issue most likely touches — data model, service layer, Helm
+   charts, Angular components, whatever the description points at. Delegate this
+   exploration per `grill-with-docs/EXPLORATION.md` (read it now, plus
+   `grill-with-docs/STACK-WORK.md`) — one Explore agent, its report format, no
+   persistence. For deployment or
    infrastructure issues, also search CI/CD pipeline files (Bamboo specs, GitHub
    Actions, etc.) and deploy scripts for references to the same secrets, flags, or
    values being changed.
-3. Build an internal picture: what exists, what will change, what is ambiguous.
+4. Build an internal picture: what exists, what will change, what is ambiguous.
 
 Output a brief orientation summary (5 lines max), then move to Phase 2. Do not
 dump file listings at the user.

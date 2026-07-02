@@ -24,7 +24,7 @@ Phase 3 confirmation is explicitly given.
 
 ### Phase 1: ORIENT
 
-**If invoked as `/plan-with-me resume {slug}`:** Load `.claude/jira-planning/{slug}/PLANNING-HANDOFF.md`. If the handoff lists written issues with `PENDING-N` placeholder slugs, prompt the user to fill in the `Jira Slug` column in `00-overview.md` before continuing. Once the user confirms the slugs are filled, read the table, rename `PENDING-N.md` files to the real slug, and find-and-replace all `PENDING-N` references across every file in the folder. Then resume from the phase recorded in the handoff, working through any "To do on resume" steps first. Before writing or editing any issue files: read `plan-to-jira/SKILL.md` and `jira-formats/SKILL.md` in full — do not rely on memory of those formats.
+**If invoked as `/plan-with-me resume {slug}`:** Load `.claude/jira-planning/{slug}/PLANNING-HANDOFF.md`. If any `PENDING-N.md` files are present in the planning directory, note them and remind the user: "Run `python3 .claude/scripts/jira_sync.py <csv_path>` after creating those issues in Jira to fill in slugs automatically." Do not rename them manually. Then resume from the phase recorded in the handoff, working through any "To do on resume" steps first. Before writing or editing any issue files: read `plan-to-jira/SKILL.md` and `jira-formats/SKILL.md` in full — do not rely on memory of those formats. If `ORIENTATION.md` exists in the planning folder, read it instead of re-exploring — re-verify claims per `grill-with-docs/EXPLORATION.md` if the commit hash has moved.
 
 **If invoked with no arguments:** Scan `.claude/jira-planning/` for all `PLANNING-HANDOFF.md` files. List each with its feature name, current phase, and date. Ask the user to pick one to resume or say "new" to start fresh. If the user picks one, follow the resume path above.
 
@@ -35,13 +35,15 @@ Before asking the user anything, gather context yourself:
 1. Read `.claude/context/CONTEXT.md` (if it exists) — this is the domain glossary.
 2. Read `.claude/context/adr/` (if it exists) — prior architectural decisions.
 3. Scan `.claude/jira-planning/` for past planning sessions relevant to this feature —
-   they describe what has already been planned/built and why.
-4. Explore the code relevant to the described change:
-   - JPA entities and their annotations (data model truth)
-   - Liquibase/Flyway migrations or DDL scripts (schema truth)
-   - Service and repository layer patterns
-   - REST controllers (URL conventions, DTO shapes)
-   - Angular feature modules, routing, and components
+   they describe what has already been planned/built and why. If `issues.csv` exists
+   in the relevant planning directory, read it for current Jira state (open issues,
+   statuses, summaries).
+4. Explore the code relevant to the described change — delegated: read
+   `grill-with-docs/EXPLORATION.md` and `grill-with-docs/STACK-WORK.md` now, fold
+   the stack bullets into the brief, and dispatch ONE Explore agent. Create the
+   planning folder (`.claude/jira-planning/{YYYY-MM-DD}_{feature-slug}/`; rename
+   if Phase 4 adopts an epic slug) and save the returned report verbatim as
+   `ORIENTATION.md` per EXPLORATION.md.
 5. Build an internal picture of: what exists, what the change touches, what is
    ambiguous.
 
@@ -51,7 +53,7 @@ then move into Phase 2. Do not dump file listings at the user.
 **Reformat mode:** If the user's input is to reformat or rewrite existing planning
 files, treat Phase 1 as reading those files (not the codebase). Skip Phase 2 unless
 there are unresolved questions or corrections to surface — if the existing
-`00-overview.md` has a confirmed alignment summary, that serves as Phase 3 input.
+`OVERVIEW.md` has a confirmed alignment summary, that serves as Phase 3 input.
 Start grilling only on what is missing or needs correction in the new format (e.g.,
 new required fields, terminology changes). Then proceed to Phase 3 confirmation as
 normal.
@@ -63,7 +65,8 @@ Follow the `grill-with-docs` skill. Read its SKILL.md now if you have not alread
 Summary of the contract: one question at a time, each with your recommended answer;
 explore the codebase instead of asking when the code can answer; challenge terms
 against `.claude/context/CONTEXT.md`; update `.claude/context/CONTEXT.md` inline as terms resolve; offer ADRs only when
-genuinely warranted.
+genuinely warranted. Apply the re-grounding rule: re-read grill-with-docs Core
+rules every 10 questions.
 
 The grilling is done only when the user says so (e.g. "we're aligned", "that's
 everything", "write the issues"). Never declare alignment yourself.

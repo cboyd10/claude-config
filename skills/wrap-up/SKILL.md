@@ -1,6 +1,6 @@
 ---
 name: wrap-up
-description: Gracefully end a planning session that has grown long (around 100-120K tokens). Writes ready issue files with PENDING-N placeholder slugs, updates 00-overview.md, and writes PLANNING-HANDOFF.md so the next session can resume without re-grilling. Invoke with /wrap-up.
+description: Gracefully end a planning session that has grown long (around 100-120K tokens). Writes ready issue files with PENDING-N placeholder slugs, updates OVERVIEW.md, and writes PLANNING-HANDOFF.md so the next session can resume without re-grilling. Invoke with /wrap-up.
 ---
 
 # wrap-up
@@ -32,15 +32,12 @@ Write files to the current session's planning folder:
 Do not write issue files that are not yet fully resolved — list them under "Issues
 pending" in the handoff instead.
 
-### 2. Update 00-overview.md
+### 2. Update OVERVIEW.md
 
-If `00-overview.md` already exists, update the issue map table so that:
-- Written issues show their `PENDING-N` slug in the `Jira Slug` column
-- Unwritten issues have a blank `Jira Slug` cell
-- Sub-task rows (`N.M`) are present for all issues in the breakdown
-
-If `00-overview.md` does not yet exist (wrap-up happened before issue writing began),
-write it now with the confirmed breakdown as the issue map table.
+`OVERVIEW.md` is a strategy doc — shared understanding, out of scope, key decisions,
+open risks. Only update it if this session produced new decisions, scope exclusions,
+or open questions not already captured there. If `OVERVIEW.md` does not exist yet,
+write it now using the template in `plan-to-jira/SKILL.md`.
 
 ### 3. Write PLANNING-HANDOFF.md
 
@@ -59,10 +56,25 @@ Write `PLANNING-HANDOFF.md` into the current planning folder using this structur
 ## Original request
 {The full feature/change description from the initial invocation, verbatim.}
 
-## Decisions resolved
-{Bullet list of every grilling decision confirmed in this session. For load-bearing
-decisions — ones that are hard to re-derive from the code, would surprise a future
-reader, or constrain future decisions — add an indented "Why this matters" note:}
+## References
+{Paths to external repos, files, or docs referenced during this session, with a
+one-line note on what each was used for.}
+
+- `/home/user/repos/other-repo/` — enrollment sync pattern being modeled after
+- Include `{planning-folder}/ORIENTATION.md` here when it exists — don't restate
+  codebase facts the brief already carries.
+
+## Previously on...
+
+{2–5 sentence narrative recap in plain English. Covers what we're building, why,
+and the shape of the solution decided this session. Write it so a fresh Claude feels
+contextually caught up after reading this paragraph — not a bullet dump, a story.}
+
+## Aligned
+
+{Bullet list of confirmed decisions. For load-bearing ones — hard to re-derive from
+code, would surprise a future reader, constrain future decisions — add an indented
+"> **Why this matters:**" note.}
 
 - Use `term_id` as the join key, not `term_code`
   > **Why this matters:** `term_code` is not unique across legacy Banner imports —
@@ -70,32 +82,21 @@ reader, or constrain future decisions — add an indented "Why this matters" not
   > This constraint is not visible in the entity class.
 - Angular component follows `MasterListComponent` pagination pattern
 
-## Open threads
-{Bullet list of questions not yet resolved. These get grilled first in the next
-session before continuing.}
+## Not yet aligned
 
-## References
-{Paths to external repos, files, or docs referenced during this session, with a
-one-line note on what each was used for.}
+{Open questions, unresolved threads, and deferred stories not yet grilled. Address
+these first on resume before continuing.}
 
-- `/home/user/repos/other-repo/` — enrollment sync pattern being modeled after
+- Open question one
+- Deferred: {story title} — {one line on what it covers and why it was deferred}
 
-## Issues written
-| PENDING-N | Title | File | Notes |
-|-----------|-------|------|-------|
-| PENDING-1 | {parent title} | PENDING-1.md | — |
-| PENDING-2 | {sub-task title} | PENDING-1.md | Sub-task of PENDING-1, header `### PENDING-2. {summary}` |
+## Resume from
 
-## Issues pending (not yet written)
-{Titles of issues in the confirmed breakdown that have not been written yet. These
-get written in the next session after Jira keys are collected.}
-
-## To do on resume
-1. Collect Jira keys: open `00-overview.md`, fill in the `Jira Slug` column for all
-   written issues (and sub-tasks), then tell Claude to proceed.
-2. Claude will find-and-replace all `PENDING-N` references across written files with
-   the real slugs and rename the files accordingly.
-3. Continue from: {phase and specific next step}.
+{Imperative briefing for the next Claude session: which plan-with-me phase to land
+in, what the specific next action is, and any immediate context needed to take that
+action. Example: "Resume at Phase 4 — WRITE ISSUES. Confirmed breakdown is in
+OVERVIEW.md. Next issue to write: {title}. Skip straight to writing — alignment is
+confirmed."}
 ```
 
 Claude should flag load-bearing decisions without being asked — a decision is
@@ -110,7 +111,7 @@ After writing all files, print:
 ```
 Session wrapped. Files written to {planning-folder}/:
 - PLANNING-HANDOFF.md
-- 00-overview.md (updated)
+- OVERVIEW.md (updated)
 - PENDING-1.md — {title}
 - PENDING-2.md — {title}
 

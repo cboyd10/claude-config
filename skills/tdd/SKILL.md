@@ -1,3 +1,8 @@
+---
+name: tdd
+description: Test-Driven Development via vertical slices - tracer bullet first, then one test, minimal code to pass, repeat; refactor only when green; tests verify behavior through public interfaces, never implementation details. Use whenever implementing application or library code with testable behavior; pickup-issue, pickup-issue-personal, and address-pr-comments delegate their IMPLEMENT phases here.
+---
+
 # Test-Driven Development
 
 ## Philosophy

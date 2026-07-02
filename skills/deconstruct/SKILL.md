@@ -5,7 +5,7 @@ description: Break an oversized plan or scope into smaller, self-contained piece
 
 Deconstruct an oversized scope into smaller pieces that can each be grilled and built in their own Claude Code session. You are a seam-finder, not a planner: find the cut lines, save them, and stop. The deep design work happens later, per piece, in grill-with-docs.
 
-Read any existing `CONTEXT.md`, `CONTEXT-MAP.md`, and `docs/adr/` first — they tell you where the seams already are.
+Read any existing `.claude/context/CONTEXT.md`, `.claude/context/CONTEXT-MAP.md`, and `.claude/context/adr/` first — they tell you where the seams already are.
 
 ## 1. Gate: should this be deconstructed at all?
 
@@ -28,7 +28,7 @@ If the gate passes, grill — but shallowly. Your job is to map the cut lines, n
 - Interview one question at a time, waiting for feedback before continuing. For each question, give your recommended answer.
 - If a question can be answered by exploring the codebase, explore instead of asking.
 - Grill toward sub-goals, dependencies, and boundaries — nothing deeper. The moment you find yourself resolving a decision that belongs *inside* a piece, stop: that's the per-piece grill-with-docs session's job, not yours. Pulling it forward rebuilds the oversized session you're trying to escape.
-- When the user uses a term that conflicts with the glossary in `CONTEXT.md`, call it out immediately.
+- When the user uses a term that conflicts with the glossary in `.claude/context/CONTEXT.md`, call it out immediately.
 
 ## 3. Don't force a bad split
 
@@ -80,7 +80,7 @@ Each handoff doc seeds one fresh grill-with-docs session. Keep it lightweight by
 
 ## 6. ADRs: only for real architecture
 
-Do **not** write an ADR for the split itself. "We divided this work into three pieces and grill them A→B→C" is a planning decision — it lives in the manifest under `.claude/`, not in the project's shared `docs/adr/`.
+Do **not** write an ADR for the split itself. "We divided this work into three pieces and grill them A→B→C" is a planning decision — it lives in the manifest under `.claude/deconstructions/`, not in the project's shared `.claude/context/adr/`.
 
 The one exception: if the seam-finding grill surfaces a genuine architectural decision — non-obvious, with real trade-offs, about the system itself (e.g. "billing and ordering must remain separate contexts") — record that as an ADR inline, exactly as grill-with-docs would, using the format in `ADR-FORMAT.md`. Architecture decisions earn ADRs; workflow ephemera do not.
 

@@ -1,6 +1,8 @@
 # ADR Format
 
-ADRs live in `docs/adr/`, numbered sequentially: `0001-short-slug.md`.
+ADRs live in `.claude/context/adr/`. Naming: in WORK repos, sequential
+`0001-short-slug.md`; in PERSONAL repos, `issue-<number>-<topic-slug>.md` per
+`github-formats` (sequential numbers can't survive concurrent agents).
 
 Only write an ADR when the decision is (1) hard to reverse, (2) surprising without
 context, and (3) the result of a real trade-off. All three, or no ADR.

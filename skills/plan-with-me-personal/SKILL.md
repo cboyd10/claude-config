@@ -45,6 +45,8 @@ Before asking the user anything, gather context yourself:
    patterns from what's there — language, framework, directory layout, test setup,
    existing module/service/component conventions — rather than assuming any stack.
    Follow existing conventions by default; deviating is a decision worth surfacing.
+   Delegate per `grill-with-docs/EXPLORATION.md` — one Explore agent, its report
+   format. Do not persist the brief (no local planning archive).
 5. Build an internal picture: what exists, what the change touches, what is ambiguous.
 
 Keep orientation output brief — a "here's what I found" summary (5 lines max), then
@@ -58,10 +60,6 @@ Contract: one question at a time, each with your recommended answer; explore the
 codebase instead of asking when the code can answer; challenge terms against
 `.claude/context/CONTEXT.md`; update CONTEXT.md inline as terms resolve; offer ADRs
 only when genuinely warranted.
-
-Note: `grill-with-docs` contains an Oracle/Spring Boot/Angular exploration section.
-Ignore that stack-specific guidance here — apply the general grilling discipline to
-whatever stack this project actually uses (discovered in ORIENT).
 
 **Pull before writing docs.** Because concurrent agents in other worktrees may also be
 editing `.claude/context/`, run `git pull` (or rebase) immediately before writing any

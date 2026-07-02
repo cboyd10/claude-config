@@ -17,39 +17,21 @@ Do NOT write any issue files until BOTH of these have happened in the conversati
 
 If invoked before the gate is passed, run the confirmation step first.
 
-## Collect Jira keys for new issues
+## Write files with PENDING-N placeholders
 
-Jira key collection happens through the `00-overview.md` issue map table — not via
-a chat prompt.
+Write all issue files immediately using sequential `PENDING-N` placeholder slugs
+(`PENDING-1.md`, `PENDING-2.md`, etc.). Do not wait for real Jira slugs. Number
+placeholders sequentially, continuing any sequence already established in the
+session.
 
-**Step 1: Write `00-overview.md` first.** Before writing any issue files, write the
-overview file with the full issue map table. Include every parent issue and sub-task
-(sub-tasks as `N.M` numbered rows). Leave the `Jira Slug` column blank for new issues.
-Already-known keys go in immediately.
+Issue files must NOT include a `**Jira Status:**` field — Jira is the source of
+truth for status; planning files do not track it.
 
-Issue map table format:
+After writing all files, tell the user:
 
-```
-| #   | Jira Slug | Title                               | Type            | Suggested tier | Depends on |
-|-----|-----------|-------------------------------------|-----------------|----------------|------------|
-| 1   |           | Implement HierarchyAccessRepository | Technical Story | Junior         | —          |
-| 1.1 |           | Sub-task: DB layer                  | Sub-task        | Junior         | —          |
-| 1.2 |           | Sub-task: Service layer             | Sub-task        | Junior         | 1.1        |
-| 2   |           | Create enriched security principal  | Technical Story | Junior         | 1          |
-```
-
-**Step 2: Ask the user to fill in slugs.** Prompt: "I've written `00-overview.md`
-with the full issue map. Please create any new issues in Jira and fill in the
-`Jira Slug` column — including sub-tasks — then let me know and I'll write the
-issue files."
-
-**Step 3: Read the table and write files.** Once the user signals the slugs are in,
-read the `00-overview.md` table. Use the slugs for file names (`LDB-1302.md`) and
-all cross-references (Depends on / Is Blocked By) across every file. For sub-tasks,
-replace the `PENDING-N` in the sub-task header (`### PENDING-6. Summary`) with the
-real key from the sub-task row in the table (`### LDB-1332. Summary`). Never write
-a file or header with a placeholder slug when the real key is obtainable from the
-table.
+> "Create these issues in Jira, then run:
+> `python3 .claude/scripts/jira_sync.py <csv_path>`
+> to fill in slugs automatically and confirm everything is in sync."
 
 ## Output location and naming
 
@@ -59,7 +41,7 @@ Write to the repo's `.claude/` directory:
 .claude/jira-planning/
 └── {epic-slug}/                         ← if an epic slug was provided
     or {YYYY-MM-DD}_{feature-slug}/      ← if no epic
-    ├── 00-overview.md
+    ├── OVERVIEW.md
     ├── PLANNING-HANDOFF.md              ← written by /wrap-up; may exist on resume
     ├── {ISSUE-SLUG}.md
     ├── {ISSUE-SLUG}.md
@@ -81,9 +63,8 @@ Write to the repo's `.claude/` directory:
 - File name is the Jira issue slug only: `LDB-1302.md`. No numbering prefix.
 - Mermaid diagrams and other attachments go in `attachments/`, named
   `{issue-slug}-{diagram-type}.mermaid`, and are referenced from the issue file by
-  relative link. (Jira issue keys are collected before writing — see "Collect Jira
-  keys for new issues" above — so the slug is always known at write time.
-  the user renames after creating the issue in Jira if they want key-based names.)
+  relative link. Use the same `PENDING-N` or real slug as the issue file; the user
+  renames after creating the issue in Jira if they want key-based names.
 - `.claude/jira-planning/` lives under `.claude/` and should remain out of commits. No need to ask the user about gitignoring.
 
 ## File contents
@@ -93,15 +74,16 @@ SKILL.md before writing. Calibrate detail per likely assignee tier (the overview
 file records the suggested tier per issue; the issue text itself should be
 self-sufficient for that tier).
 
-### 00-overview.md
+### OVERVIEW.md
 
-Not pasted into Jira — it's the session record and the map. Contains:
+Not pasted into Jira — it's the session record. Contains:
 
 ```markdown
 # {Feature name} — planning summary
 
 Date: {YYYY-MM-DD}
 Repo: {repo name}
+Epic: {epic slug, if applicable}
 
 ## Shared understanding
 {The confirmed bullet summary from the alignment phase, verbatim.}
@@ -109,16 +91,19 @@ Repo: {repo name}
 ## Out of scope
 {Explicit exclusions agreed during grilling.}
 
-## Issue map
-| #   | Jira Slug | Title | Type | Suggested tier | Depends on |
-|-----|-----------|-------|------|----------------|------------|
-
 ## Decisions made this session
 {One line each, with links to any ADRs created.}
+
+## Issues
+{One line per issue: title (slug when known), suggested assignee tier, and
+dependencies. Tier suggestions live here only — never in the issue text.}
 
 ## Open questions / risks
 {Anything consciously deferred.}
 ```
+
+Jira status is never tracked here — `issues.csv` carries current Jira state for
+in-flight issues.
 
 ## Writing principles
 

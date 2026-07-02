@@ -61,7 +61,8 @@ When you state how something currently works, cite the file. If the user's descr
 
 Read the project's domain glossary (`.claude/context/CONTEXT.md`) and any ADRs in `.claude/context/adr/` first.
 
-Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
+Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Require
+the report contract in [../grill-with-docs/EXPLORATION.md](../grill-with-docs/EXPLORATION.md). Don't follow rigid heuristics — explore organically and note where you experience friction:
 
 - Where does understanding one concept require bouncing between many small modules?
 - Where are modules **shallow** — interface nearly as complex as the implementation?
