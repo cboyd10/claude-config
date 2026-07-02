@@ -113,6 +113,25 @@ behaviors pass; tests verify behavior through public interfaces.
 **If TDD does not apply:** implement directly and verify with the appropriate check for
 this project (test command, build, lint, dry-run).
 
+**UI/frontend verification:** once tests pass, if the diff touches client/UI files
+(components, pages, styles, client-side routes), component tests alone don't prove the
+feature works — ask the user whether to verify it in a real browser before moving on.
+Recommend yes for a substantial UI feature or fix; treat it as optional/skippable for a
+small or low-risk UI change. If the user declines or this is a small change and they'd
+rather skip it, proceed to commit without browser verification. If they say yes:
+
+1. Check for a project-specific run/launch skill first; otherwise invoke Claude Code's
+   bundled `run` skill to start the app.
+2. If the app requires interactive auth (OAuth/SSO) that blocks automated login, look
+   for a lightweight local workaround before giving up — e.g. minting a dev JWT/session
+   token with the same signing secret, a seeded test user, or a documented dev-bypass
+   flag. Only fall back to "tests only, unverified" if no such workaround exists, and
+   state that explicitly.
+3. Actually drive the feature — click the control, open the sheet, apply the filter —
+   and capture screenshots as evidence, not just a page load.
+4. Tear down anything started for verification (dev servers, local DB, seeded data)
+   before finishing.
+
 Make the first commit early. Then open the draft PR (Phase 6) so concurrent work is
 visible and CI starts, and continue implementing on the same branch.
 
