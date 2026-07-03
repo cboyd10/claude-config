@@ -66,6 +66,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/REVIEW-EXPECTATIONS.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/SECURITY-CHECKLIST.md
 
+**skill-retro**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/skill-retro/SKILL.md
+
 **tdd**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/deep-modules.md

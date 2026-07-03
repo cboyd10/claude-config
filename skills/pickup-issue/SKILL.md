@@ -122,6 +122,10 @@ After implementation:
    clean, no uncommitted changes. Optionally remind the user they can remove the
    worktree after the branch is merged:
    `git worktree remove ../<repo>-worktrees/{JIRA-SLUG}`.
+4. If this session produced retro signal — corrections to your assumptions,
+   context the user had to re-explain, or grilling questions the issue text
+   should have pre-answered — offer `/skill-retro` before closing. Skip the
+   offer if there was no signal.
 
 ## General conduct
 

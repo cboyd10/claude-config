@@ -172,6 +172,10 @@ visible and CI starts, and continue implementing on the same branch.
 Optionally remind the user they can remove the worktree after merge:
 `git worktree remove ../<repo>-worktrees/<slug>`.
 
+If this session produced retro signal — an afk self-downgrade, corrections to
+your assumptions, or context the user had to re-explain — offer `/skill-retro`
+before closing. Skip the offer if there was no signal.
+
 If any files were created or modified in a `skills/` directory of a `claude-config`
 repo during this implementation, run the `update-ios-instructions` skill as the
 final step.
