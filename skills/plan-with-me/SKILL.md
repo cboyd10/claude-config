@@ -33,7 +33,8 @@ Phase 3 confirmation is explicitly given.
 Before asking the user anything, gather context yourself:
 
 1. Read `.claude/context/CONTEXT.md` (if it exists) — this is the domain glossary.
-2. Read `.claude/context/adr/` (if it exists) — prior architectural decisions.
+2. Read `docs/adr/` and any legacy `.claude/context/adr/` (if they exist) —
+   prior architectural decisions.
 3. Scan `.claude/jira-planning/` for past planning sessions relevant to this feature —
    they describe what has already been planned/built and why. If `issues.csv` exists
    in the relevant planning directory, read it for current Jira state (open issues,
@@ -64,9 +65,10 @@ Follow the `grill-with-docs` skill. Read its SKILL.md now if you have not alread
 
 Summary of the contract: one question at a time, each with your recommended answer;
 explore the codebase instead of asking when the code can answer; challenge terms
-against `.claude/context/CONTEXT.md`; update `.claude/context/CONTEXT.md` inline as terms resolve; offer ADRs only when
-genuinely warranted. Apply the re-grounding rule: re-read grill-with-docs Core
-rules every 10 questions.
+against `.claude/context/CONTEXT.md`; update `.claude/context/CONTEXT.md` inline as terms resolve; record ADR-worthy
+decisions for `OVERVIEW.md`'s `## Decisions made this session` instead of writing
+ADRs (`update-docs` writes ADRs post-implementation). Apply the re-grounding
+rule: re-read grill-with-docs Core rules every 10 questions.
 
 The grilling is done only when the user says so (e.g. "we're aligned", "that's
 everything", "write the issues"). Never declare alignment yourself.
@@ -132,7 +134,9 @@ improving the skills themselves. Look for:
 - **Missing template coverage**: issue shapes or sections the templates didn't
   handle well.
 
-Also separately list any `.claude/context/CONTEXT.md` or ADR updates that were deferred during grilling.
+Also separately list any `.claude/context/CONTEXT.md` updates deferred during
+grilling, and any decisions still missing from `OVERVIEW.md`'s
+`## Decisions made this session` section.
 
 Present findings as **concrete proposed edits**: name the skill file, quote the exact
 text you would add or change, and explain in one sentence why. Format:

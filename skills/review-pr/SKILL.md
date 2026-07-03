@@ -53,7 +53,8 @@ Before presenting anything to the user:
       if found, read the referenced planning file for the ACs.
    b. Otherwise, use the PR description as the AC source.
    c. Otherwise, ask the user to paste the Jira issue description and ACs.
-5. Read `.claude/context/CONTEXT.md` and `.claude/context/adr/` if they exist.
+5. Read `.claude/context/CONTEXT.md` and `docs/adr/` (or legacy
+   `.claude/context/adr/`) if they exist.
 
 Output a brief orientation summary (3–5 lines: PR title, author, branch,
 existing-feedback count, and **which AC source you are reviewing against**).
@@ -88,7 +89,7 @@ Review through these lenses (the team's "Review Focus" vocabulary):
 - **Scalability** — refactorable, handles slightly different future scenarios.
 - **Security** — check against `SECURITY-CHECKLIST.md` in this skill directory.
 - **Tests** — missing tests are Blocking; tests must assert behavior, not implementation.
-- **Domain fidelity** — names and terms in the diff checked against `.claude/context/CONTEXT.md`, decisions against `.claude/context/adr/`, when those exist.
+- **Domain fidelity** — names and terms in the diff checked against `.claude/context/CONTEXT.md`, decisions against `docs/adr/` (or legacy `.claude/context/adr/`), when those exist.
 
 Read `REVIEW-EXPECTATIONS.md` in this skill directory for the lens essences and
 the blocking/non-blocking definitions.
