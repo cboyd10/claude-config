@@ -3,13 +3,6 @@
 Seed notes for future skill-building sessions. Each entry gets its own
 grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
-## 5. bootstrap-context
-
-One-shot skill: explore a repo (delegated per EXPLORATION.md) and draft an
-initial `.claude/context/CONTEXT.md` glossary + orientation brief for legacy
-repos that have none. Cuts the cold-start ORIENT tax; doubles as junior
-onboarding material.
-
 ## 6. skill-retro (standalone)
 
 The retrospective phase exists only inside plan-with-me. Pickup and
