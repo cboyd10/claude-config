@@ -98,19 +98,10 @@ enable it. Do not fall back to writing files.
 
 ### Phase 5: SKILL RETROSPECTIVE
 
-After the issues are created, review the session for skill-improvement candidates:
-
-- **Repeated context** the user had to explain that a skill could have known.
-- **Corrections** to your assumptions about their workflow, project, or formats.
-- **New stable preferences** that will apply to future sessions.
-- **Missing template coverage** in `github-formats`.
-
-Also separately list any CONTEXT.md or ADR updates deferred during grilling.
-
-Present findings as concrete proposed edits: name the skill file, quote the exact text
-to add or change, explain why in one sentence, and ask `Apply this change?
-(yes / no / edit)`. **Never edit a skill file without explicit approval of that
-specific change.** If there are no worthwhile improvements, say so — don't invent them.
+After the issues are created, follow the `skill-retro` skill (read its SKILL.md
+now). Its planning addendum covers this flow's specifics: missing template
+coverage in `github-formats`, plus any CONTEXT.md or ADR updates deferred during
+grilling.
 
 ## General conduct
 

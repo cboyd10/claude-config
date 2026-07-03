@@ -8,6 +8,10 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **address-pr-comments**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/address-pr-comments/SKILL.md
 
+**bootstrap-context**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/ORIENTATION-FORMAT.md
+
 **deconstruct**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/deconstruct/SKILL.md
 
@@ -61,6 +65,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/REVIEW-EXPECTATIONS.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/review-pr/SECURITY-CHECKLIST.md
+
+**skill-retro**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/skill-retro/SKILL.md
 
 **tdd**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/SKILL.md

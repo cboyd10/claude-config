@@ -122,41 +122,10 @@ one-line description of each.
 
 ### Phase 5: SKILL RETROSPECTIVE
 
-After the files are written, review the entire session and identify candidates for
-improving the skills themselves. Look for:
-
-- **Repeated context**: anything the user had to explain that a skill could have
-  already known (preferences, conventions, sizing rules, naming patterns).
-- **Corrections**: places the user corrected your assumptions about their stack,
-  workflow, or formats.
-- **New stable preferences**: decisions that will clearly apply to future sessions,
-  not just this feature.
-- **Missing template coverage**: issue shapes or sections the templates didn't
-  handle well.
-
-Also separately list any `.claude/context/CONTEXT.md` updates deferred during
-grilling, and any decisions still missing from `OVERVIEW.md`'s
-`## Decisions made this session` section.
-
-Present findings as **concrete proposed edits**: name the skill file, quote the exact
-text you would add or change, and explain in one sentence why. Format:
-
-```
-## Proposed skill updates
-
-### 1. jira-formats/SKILL.md — sub-task sizing
-Why: you explained the one-layer-per-PR rule during grilling; future sessions
-shouldn't need to re-ask.
-Proposed addition under "Sub-task sizing":
-> {exact text}
-
-Apply this change? (yes / no / edit)
-```
-
-**Never edit a skill file without explicit approval of that specific change.**
-Propose first, write only after a "yes". If the user rejects or edits, follow their
-direction. If there are no worthwhile improvements, say so briefly — do not invent
-changes to have something to propose.
+After the files are written, follow the `skill-retro` skill (read its SKILL.md
+now). Its planning addendum covers this flow's specifics: missing template
+coverage, deferred `.claude/context/CONTEXT.md` updates, and decisions still
+missing from `OVERVIEW.md`'s `## Decisions made this session`.
 
 ## General conduct
 

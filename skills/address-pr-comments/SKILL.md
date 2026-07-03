@@ -116,6 +116,9 @@ After all fixes are applied:
 1. Run the relevant test suite and confirm it passes.
 2. Report which "Defer" items may need a new Jira issue, so the user can create
    them before resolving the PR comments.
+3. If this session produced retro signal — corrections to your assumptions or
+   context the user had to re-explain — offer `/skill-retro` before closing.
+   Skip the offer if there was no signal.
 
 ## General conduct
 

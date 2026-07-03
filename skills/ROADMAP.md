@@ -3,14 +3,6 @@
 Seed notes for future skill-building sessions. Each entry gets its own
 grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
-## 6. skill-retro (standalone)
-
-The retrospective phase exists only inside plan-with-me. Pickup and
-address-pr-comments sessions generate the same signal (corrections, repeated
-context, afk-downgrades) but nothing harvests it. A `/skill-retro` invocable at
-the end of any session. Same approval gate: propose exact edits, never apply
-without explicit yes.
-
 ## 7. debug-problems
 
 Requested 2026-07-02, not yet grilled. A skill for systematically debugging
