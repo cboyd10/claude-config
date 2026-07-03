@@ -21,7 +21,14 @@ Phase 3 alignment is explicitly confirmed by the user.
 
 ### Phase 1: ORIENT
 
-Before asking the user anything, gather context:
+**Resumed pickup check (first):** if the worktree `../<repo>-worktrees/{JIRA-SLUG}/`
+already exists and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
+resumed pickup. Follow the resume contract in `wrap-up/IMPLEMENTATION.md`: read the
+handoff, verify it against `git log`/`git status`, skip re-grilling what it records
+as aligned (address "Not yet aligned" items first), reuse the worktree in Phase 4,
+land in the phase it names, and delete the handoff once caught up.
+
+Otherwise, before asking the user anything, gather context:
 
 1. Read `.claude/context/CONTEXT.md` and `docs/adr/` (plus any legacy
    `.claude/context/adr/`) if they exist.
