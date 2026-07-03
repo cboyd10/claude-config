@@ -3,20 +3,6 @@
 Seed notes for future skill-building sessions. Each entry gets its own
 grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
-## 3. iOS-chat grilling variant
-
-A grill-with-docs adaptation for plain Claude chat on iOS (NOT the iOS Claude
-Code feature, which is full Claude Code and needs no variant). Constraints
-learned 2026-07-02:
-
-- No Agent tool, no filesystem, no git. Skills arrive via `ios-instructions.md`
-  raw-URL fetches.
-- Codebase grounding must come from raw GitHub URLs (public repos) or the
-  GitHub connector — work repos are likely unreachable; scope may be
-  personal-projects-only or "grill from pasted context."
-- Output artifact must be chat text the user copies (no files to write) — maybe
-  a paste-ready PLANNING-HANDOFF block that a later CLI session can consume.
-
 ## 4. Implementation wrap-up
 
 `wrap-up` is planning-only. pickup-issue anticipates resumed pickups ("if the
