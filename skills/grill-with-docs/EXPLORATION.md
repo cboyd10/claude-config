@@ -42,6 +42,15 @@ The agent starts cold — give it a self-contained brief:
     ## Not found
     What you searched for and did NOT find, so nobody re-searches it.
 
+## Repo-level orientation brief
+
+If `.claude/context/ORIENTATION.md` exists (the ORIENTATION BRIEF written by
+`bootstrap-context`), read it BEFORE delegating any ORIENT brief. Use it to
+narrow the exploration — or skip delegation entirely when it already answers
+the need. It is a map, not truth: check its `Derived:` commit hash, and if
+HEAD has moved, re-verify any claim a decision will rest on before relying
+on it.
+
 ## ORIENT briefs
 
 - **plan-with-me** delegates its whole codebase orientation as one Explore task

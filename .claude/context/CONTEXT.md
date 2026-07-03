@@ -23,6 +23,17 @@ remaining), commits made vs pending work, verification state, and the
 originating skill to re-invoke. Consumed by the ORIENT phases of pickup-issue,
 pickup-issue-personal, and address-pr-comments.
 
+### Context artifacts
+
+**ORIENTATION BRIEF**:
+The repo-level structural map bootstrap-context derives from one delegated
+exploration, persisted as `.claude/context/ORIENTATION.md` with a
+`Derived: {date} at commit {hash}` staleness header. A map, not truth:
+regenerated wholesale on each bootstrap-context re-run, never maintained
+incrementally. Consumed by ORIENT phases (per `grill-with-docs/EXPLORATION.md`)
+to narrow or skip exploration, and by juniors as onboarding material. Format
+per `bootstrap-context/ORIENTATION-FORMAT.md`.
+
 ### Ideation artifacts
 
 **IDEA BRIEF**:
@@ -52,3 +63,6 @@ checkpoint, plus rollback notes for risky steps. Format per `RUNBOOK-FORMAT.md`.
 - An **IDEA BRIEF** is consumed by a later Claude session (materializing a new
   repo, or as input to a planning session); a **RUNBOOK** is consumed by the
   user directly.
+- An **ORIENTATION BRIEF** is refreshed only by re-running bootstrap-context;
+  the glossary beside it grows additively across grilling sessions and is
+  never clobbered by a refresh.
