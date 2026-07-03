@@ -8,6 +8,10 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **address-pr-comments**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/address-pr-comments/SKILL.md
 
+**bootstrap-context**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/ORIENTATION-FORMAT.md
+
 **deconstruct**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/deconstruct/SKILL.md
 
