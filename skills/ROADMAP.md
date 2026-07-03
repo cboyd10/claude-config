@@ -3,14 +3,6 @@
 Seed notes for future skill-building sessions. Each entry gets its own
 grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
-## 4. Implementation wrap-up
-
-`wrap-up` is planning-only. pickup-issue anticipates resumed pickups ("if the
-worktree path already exists, reuse it") but nothing writes the handoff a
-resumed implementation session needs: which TDD slice was in flight, commits
-made vs pending, alignment summary, verification state. Long implementation
-sessions hit 120K just like planning ones.
-
 ## 5. bootstrap-context
 
 One-shot skill: explore a repo (delegated per EXPLORATION.md) and draft an

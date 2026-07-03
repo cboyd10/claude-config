@@ -35,6 +35,16 @@ alignment is confirmed.
 
 ### Phase 1: ORIENT
 
+**Resumed pickup check (first):** if the worktree `../<repo>-worktrees/<slug>/`
+already exists and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
+resumed pickup. Follow the resume contract in `wrap-up/IMPLEMENTATION.md`: read the
+handoff, verify it against `git log`/`git status` and the PR's current state, skip
+re-grilling what it records as aligned (address "Not yet aligned" items first),
+reuse the worktree in Phase 4, land in the phase it names, and delete the handoff
+once caught up.
+
+Otherwise:
+
 1. **Fetch the issue via MCP.** Read every section: Summary, Autonomy, Context,
    Acceptance Criteria, Implementation Notes, Out of Scope. Read the `afk`/`hitl`
    label.

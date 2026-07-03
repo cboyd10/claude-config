@@ -78,5 +78,7 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 
 **wrap-up**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/wrap-up/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/wrap-up/IMPLEMENTATION.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/wrap-up/PLANNING.md
 
 When using a skill, fetch the SKILL.md first. For skills with additional files, fetch the supporting files as needed during the task.

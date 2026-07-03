@@ -21,7 +21,14 @@ is explicitly confirmed by the user.
 
 ### Phase 1: ORIENT
 
-Before presenting anything to the user:
+**Resumed session check (first):** if a worktree for the PR's branch already exists
+and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md` naming this skill, this is
+a resumed session. Follow the resume contract in `wrap-up/IMPLEMENTATION.md`: read
+the handoff (its embedded triage table is the confirmed alignment), verify it
+against `git log`/`git status`, skip Phases 2–3 for rows already confirmed, resume
+implementing the remaining "Fix now" items, and delete the handoff once caught up.
+
+Otherwise, before presenting anything to the user:
 
 1. Parse the review document to list all open comments (reviewer, file, line, text).
 2. Read every file and line referenced by those comments. Build an internal picture
