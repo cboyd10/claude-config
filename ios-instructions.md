@@ -15,6 +15,11 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/ADR-FORMAT.md
 
+**flesh-out**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/flesh-out/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/flesh-out/BRIEF-FORMAT.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/flesh-out/RUNBOOK-FORMAT.md
+
 **github-formats**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/github-formats/SKILL.md
 
