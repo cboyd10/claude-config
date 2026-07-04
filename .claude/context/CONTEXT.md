@@ -105,6 +105,25 @@ The protocol an ORIENT phase follows on finding a worktree with an
 already-aligned items, land in the phase it names, and delete the handoff once
 caught up.
 
+### Debugging
+
+**DIAGNOSIS**:
+The deliverable of a debug-problems session: a Bug issue whose text records
+the confirmed root cause, the evidence for it (file:line citations), and
+reproduction steps. Work flows emit it as a paste-ready Jira Bug per
+jira-formats; personal flows write it to a GitHub issue via the MCP. Drafted
+as a new issue when none exists. Consumed by the pickup flows' normal ORIENT
+phase — debug-problems never implements the fix.
+
+**INVESTIGATION LOG**:
+The partial-state record a debug-problems session writes to the issue when it
+wraps before the root cause is confirmed: the reproduction recipe, hypotheses
+killed (with the evidence that killed them), and hypotheses surviving. Same
+home and transport as the **DIAGNOSIS** (paste-ready Jira comment for work,
+GitHub issue comment for personal). A resumed debug-problems session reads it
+and skips dead hypotheses. Debug sessions wrap themselves — wrap-up's two
+handoff types do not apply (no planning folder, no worktree).
+
 ### Retrospective
 
 **RETRO SIGNAL**:
