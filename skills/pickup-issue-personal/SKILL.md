@@ -55,6 +55,12 @@ Otherwise:
    Explore agent, its report format, no persistence.
 4. Build an internal picture: what exists, what changes, what is ambiguous.
 
+**Bug gate:** if the issue describes a bug and its text does not already pin a
+confirmed root cause, run the `debug-problems` skill now — you cannot align on a
+fix for an unknown cause. On return the issue carries the DIAGNOSIS; Phase 2
+proceeds against it. (An `afk` bug without a pinned root cause is by definition
+under-specified — the gate counts as an afk self-downgrade trigger.)
+
 Output a brief orientation summary (5 lines max), then move to Phase 2.
 
 ### Phase 2: GRILL — depth governed by the autonomy label

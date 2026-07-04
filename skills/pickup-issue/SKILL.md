@@ -45,6 +45,12 @@ Otherwise, before asking the user anything, gather context:
    values being changed.
 4. Build an internal picture: what exists, what will change, what is ambiguous.
 
+**Bug gate:** if the issue is a Bug and its text does not already pin a confirmed
+root cause, run the `debug-problems` skill now — you cannot grill toward a fix
+for an unknown cause. On return the issue text carries the DIAGNOSIS; Phase 2
+grills against it (typically much shorter, since cause and evidence are
+pre-answered).
+
 Output a brief orientation summary (5 lines max), then move to Phase 2. Do not
 dump file listings at the user.
 
