@@ -21,6 +21,11 @@ Stop grilling and recommend `/deconstruct` when ANY of these holds:
   `jira-formats` estimation rules) and revise it as grilling reveals scope — re-check
   the gate whenever the number grows.
 
+For personal repos (no `jira-formats` estimation rules apply), produce a rough ad hoc
+hour estimate by decomposing the proposed scope into its natural sub-parts and
+eyeballing implementation time for each — precision doesn't matter, only whether the
+running total is comfortably under or clearly over the 72-hour line.
+
 Don't try to grill an oversized scope to completion in one sitting.
 
 ## Core rules
