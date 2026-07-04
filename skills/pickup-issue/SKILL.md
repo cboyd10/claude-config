@@ -1,6 +1,6 @@
 ---
 name: pickup-issue
-description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a Git worktree (sibling directory) named after the slug, then implements (using TDD for Angular/Spring Boot code changes). Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
+description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a Git worktree (sibling directory) named after the slug, implements (using TDD for Angular/Spring Boot code changes), then self-reviews the diff via the bundled code-review skill before handing the branch over. Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
 ---
 
 # pickup-issue
@@ -16,7 +16,8 @@ Run these phases strictly in order. Do not create a worktree or write any code u
 Phase 3 alignment is explicitly confirmed by the user.
 
 ```
-1. ORIENT  →  2. GRILL  →  3. CONFIRM ALIGNMENT  →  4. WORKTREE  →  5. IMPLEMENT  →  6. DOCS
+1. ORIENT  →  2. GRILL  →  3. CONFIRM ALIGNMENT  →  4. WORKTREE  →  5. IMPLEMENT
+  →  6. SELF-REVIEW  →  7. DOCS
 ```
 
 ### Phase 1: ORIENT
@@ -60,7 +61,7 @@ Follow the `grill-with-docs` skill. Read its SKILL.md now if you have not alread
 
 Goal: shared understanding of exactly what needs to change, why, what is out of
 scope, and what could go wrong. Update `.claude/context/CONTEXT.md` as terms
-resolve. Do not write ADRs or product docs — see Phase 6.
+resolve. Do not write ADRs or product docs — see Phase 7.
 
 The grilling is done only when the user explicitly confirms (e.g. "we're aligned",
 "let's do it", "that's everything"). Never declare alignment yourself.
@@ -113,7 +114,28 @@ Key rules:
 Implement directly with Edit/Write/Bash. Verify correctness with the appropriate
 check (e.g. `./gradlew clean test`, Helm dry-run, static analysis).
 
-### Phase 6: DOCS
+### Phase 6: SELF-REVIEW
+
+Review your own diff before handing the branch over — a reviewer's first pass,
+run by you:
+
+1. From the worktree, invoke Claude Code's bundled `code-review` skill (via the
+   Skill tool) at medium effort against the branch diff
+   (`git diff origin/{base-branch}...HEAD`). If the bundled skill is unavailable
+   in this environment, do a manual correctness pass over the same diff instead.
+2. Triage the findings:
+   - **Confirmed correctness bugs** — fix now. When the fix touches Angular or
+     Spring Boot production code, go through `tdd` (failing test first); re-run
+     the tests after.
+   - **Judgment calls** (design trade-offs, scope questions) — surface to the
+     user; never silently expand scope beyond the Phase 3 alignment.
+   - **False positives / out-of-scope findings** — skip, with a one-line note.
+3. Summarize the outcome in a few lines: fixed, surfaced, skipped.
+
+This gate is cheap insurance before the coworker review — it does not replace
+the team's PR review.
+
+### Phase 7: DOCS
 
 After implementation:
 
