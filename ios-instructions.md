@@ -23,6 +23,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats/ADR-FORMAT.md
 
+**docs-formats-personal**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/docs-formats-personal/SKILL.md
+
 **flesh-out**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/flesh-out/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/flesh-out/BRIEF-FORMAT.md
@@ -43,6 +46,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/improve-codebase-architecture/HTML-REPORT.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/improve-codebase-architecture/INTERFACE-DESIGN.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/improve-codebase-architecture/LANGUAGE.md
+
+**improve-codebase-architecture-personal**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/improve-codebase-architecture-personal/SKILL.md
 
 **jira-formats**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/jira-formats/SKILL.md
@@ -83,6 +89,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 
 **update-docs**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-docs/SKILL.md
+
+**update-docs-personal**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-docs-personal/SKILL.md
 
 **update-ios-instructions**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/update-ios-instructions/SKILL.md

@@ -1,6 +1,6 @@
 ---
 name: pickup-issue-personal
-description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk compresses to a single go/no-go, hitl runs a full grilling session. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
+description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, self-reviews the diff via the bundled code-review skill, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk compresses to a single go/no-go, hitl runs a full grilling session. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
 ---
 
 # pickup-issue-personal
@@ -157,15 +157,30 @@ visible and CI starts, and continue implementing on the same branch.
    body MUST contain `Closes #<number>` so merging to `main` auto-closes the issue.
 2. **Comment on the issue** linking the PR.
 3. Continue implementing, pushing commits to the branch.
-4. **When the slice is complete**, wait for CI to pass before promoting:
+4. **When the slice is complete, self-review the diff** before involving CI or
+   promoting. Invoke Claude Code's bundled `code-review` skill (via the Skill
+   tool) at medium effort against the branch diff
+   (`git diff origin/<base-branch>...HEAD`); if the bundled skill is
+   unavailable, do a manual correctness pass over the same diff. Then triage:
+   - **Confirmed correctness bugs** — fix and push (through `tdd` when the fix
+     touches testable logic: failing test first).
+   - **Judgment calls** — for `hitl` issues, surface them to the user before
+     promoting. For `afk` issues, apply only high-confidence fixes and record
+     anything judgment-shaped in the PR description; a finding that reveals real
+     ambiguity is an afk self-downgrade trigger, same as in Phase 2.
+   - **False positives / out-of-scope findings** — skip, with a one-line note.
+   Never silently expand scope beyond the Phase 3 alignment. This gate is your
+   own reviewer pass — on a personal project there is no coworker review behind
+   it, so don't rubber-stamp it.
+5. **Wait for CI to pass** before promoting:
    - Using the GitHub MCP's workflow-run tools (discover the exact tool names from
      the connected MCP — do not guess), find the latest run for the branch and poll
      until it reaches a terminal state (`completed`, `failure`, `cancelled`).
    - On failure, diagnose and fix: push a corrective commit, then re-poll the new run.
    - Do not promote until the run concludes with `conclusion: success`.
-5. **Once CI is green**, promote the PR from draft to **ready for review**. Via MCP,
+6. **Once CI is green**, promote the PR from draft to **ready for review**. Via MCP,
    swap labels: remove `in-progress`, add `in-review`.
-6. Leave merging to the user. On merge to `main`, GitHub auto-closes the issue via the
+7. Leave merging to the user. On merge to `main`, GitHub auto-closes the issue via the
    `Closes #<number>` link — no manual close step.
 
 ### Phase 7: DOCS
