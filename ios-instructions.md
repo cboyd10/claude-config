@@ -12,6 +12,12 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/bootstrap-context/ORIENTATION-FORMAT.md
 
+**build-style-guide**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/build-style-guide/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/build-style-guide/BRIEF-FORMAT.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/build-style-guide/ELEMENTS.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/build-style-guide/STACK-ANGULAR.md
+
 **debug-problems**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/debug-problems/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/debug-problems/STACK-WORK.md

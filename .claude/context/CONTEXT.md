@@ -105,6 +105,16 @@ The protocol an ORIENT phase follows on finding a worktree with an
 already-aligned items, land in the phase it names, and delete the handoff once
 caught up.
 
+### Styling
+
+**COMPONENT BRIEF**:
+The document build-style-guide's Phase 2 derives from an approved style-guide
+page: an inventory of components to build, each entry naming its BEM
+block/partial, a sketch of the component API, existing-app usages to convert
+(file citations), and sequencing. Written in the client worktree; consumed by
+plan-with-me (work) or plan-with-me-personal (personal) as grilling input for
+the component-library conversion issues.
+
 ### Debugging
 
 **DIAGNOSIS**:
