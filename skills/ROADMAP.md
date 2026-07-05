@@ -19,6 +19,16 @@ grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
   text fallback. Deferred 2026-07-05 during the sweep-issues-personal grilling
   session.
 
+- **deconstruct: vertical slices vs. horizontal layers as an explicit seam axis.**
+  When deconstructing a scope that spans both backend and frontend work, ask
+  whether the user wants vertical slices (each piece pairs backend logic with the
+  UI needed to exercise it, so every piece is manually testable end-to-end) or
+  horizontal layers (all backend pieces, then all UI pieces) — don't default to
+  layers, since vertical slicing is often what a solo/personal-project builder
+  actually wants. Deferred 2026-07-05 during an AstroWatch
+  phase-1-domain-engine deconstruction session, where a horizontal-layer default
+  had to be redirected by the user mid-session.
+
 ## Pending chore
 
 - Decide whether the `bitbucket_pr_to_review` script (currently
