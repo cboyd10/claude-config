@@ -89,7 +89,20 @@ When the user signals the grilling is done:
      step Claude Code can't or genuinely shouldn't perform itself, with that step
      named. Uncertainty is not a reason to tag `hitl` — it's a sign the grilling
      isn't finished.
-   - dependencies / rough ordering between issues.
+   - dependencies / rough ordering between issues. **Shape the dependency graph
+     deliberately** — `sweep-issues-personal` executes it literally:
+     - A dependency is a **true build-order constraint** only. Never fabricate an
+       edge to force an ordering, and downgrade "related to" to a plain Context
+       link — over-declared edges serialize work the sweep could run in parallel
+       and corrupt the graph's documentation value.
+     - Aim for **at most 2 blockers** per issue (the sweep octopus-stacks 2;
+       3+ waits for merges).
+     - An issue with 3+ real blockers is legitimate only as a **thin join node** —
+       an assembly or cutover issue with little implementation substance of its
+       own. A *substantial* issue with 3+ blockers means the breakdown wants
+       reshaping: extract the shared prerequisite into its own issue, or invert to
+       a walking skeleton (build the shell first so the pieces depend on it, not
+       the reverse).
 3. Ask the user to confirm or correct BOTH the understanding AND the breakdown,
    including the afk/hitl calls.
 4. Iterate until the user explicitly confirms. Only then proceed to Phase 4.

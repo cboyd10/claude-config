@@ -35,9 +35,12 @@ skill is the mechanics of pushing; `github-formats` is the format of record.
    equally specified and additionally names its human-performed step in the
    Autonomy section.
 
-3. **Express dependencies.** When issue B depends on issue A, note it in B's Context
-   section ("Depends on #<A>"). Create independent issues first so dependent issues can
-   reference real numbers.
+3. **Express dependencies.** When issue B depends on issue A, write a DEPENDS-ON
+   LINE in B's Context section — exactly `Depends on #<A>` on its own line, one
+   blocker per line, per `github-formats`. This is the machine-readable signal
+   `sweep-issues-personal` builds its dispatch graph from, so the phrasing is not
+   flexible; merely related issues are linked as plain prose instead. Create
+   independent issues first so dependent issues can reference real numbers.
 
 4. **Create the issues** via MCP, one at a time. For each: set title, body, and the
    single autonomy label (`afk` or `hitl`). Capture the returned issue number.
