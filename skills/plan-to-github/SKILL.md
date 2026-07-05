@@ -30,9 +30,10 @@ skill is the mechanics of pushing; `github-formats` is the format of record.
 
 2. **Format each issue** per the `github-formats` body template: Summary, Autonomy,
    Context, Acceptance Criteria, Implementation Notes, Out of Scope. Acceptance
-   criteria as `- [ ]` checkboxes. For `afk` issues, make Implementation Notes
-   prescriptive and acceptance criteria mechanically verifiable; for `hitl`, lighter
-   notes since pickup will grill.
+   criteria as `- [ ]` checkboxes. Make Implementation Notes prescriptive and
+   acceptance criteria mechanically verifiable for EVERY issue — a `hitl` issue is
+   equally specified and additionally names its human-performed step in the
+   Autonomy section.
 
 3. **Express dependencies.** When issue B depends on issue A, note it in B's Context
    section ("Depends on #<A>"). Create independent issues first so dependent issues can
@@ -50,7 +51,10 @@ skill is the mechanics of pushing; `github-formats` is the format of record.
 - Do not edit existing issues unless the user asks — this skill creates from a fresh
   breakdown.
 - If a proposed issue is tagged `afk` but its acceptance criteria are not actually
-  verifiable without judgment, flag it and propose either tightening the criteria or
-  reclassifying to `hitl` before creating. An `afk` tag is a promise.
+  verifiable without judgment, flag it and send it back for tightening — do NOT
+  reclassify to `hitl`, which is reserved for steps Claude Code can't or shouldn't
+  perform itself (per `github-formats`). Likewise flag a `hitl` issue whose Autonomy
+  line names no such step: it is either really `afk` or not ready to create. An
+  `afk` tag is a promise.
 - One issue per coherent unit of work. If the breakdown bundled two unrelated changes
   into one issue, surface it rather than creating a muddy issue.

@@ -59,14 +59,25 @@ checkpoint, plus rollback notes for risky steps. Format per `RUNBOOK-FORMAT.md`.
 ### Autonomy labels
 
 **AFK**:
-An autonomy label ("away from keyboard") on a personal GitHub issue asserting
-an agent can implement it unattended: every design decision is pre-made in the
-issue text and justified under its `## Autonomy` section. Set by
-plan-to-github at creation; read by pickup-issue-personal to skip grilling.
+The default autonomy label ("away from keyboard") on a personal GitHub issue,
+asserting an agent can implement it unattended: every design decision is
+pre-made in the issue text and justified under its `## Autonomy` section.
+Every issue leaves planning as **AFK** unless it qualifies for **HITL** — if
+Claude Code can do the work inside the codebase and tooling it has access to
+and it isn't a security concern, it's AFK. Set by plan-to-github at creation;
+read by pickup-issue-personal to skip grilling.
 
 **HITL**:
-The opposing autonomy label ("human in the loop"): the issue needs live
-judgment, so pickup runs a full grilling session before implementing.
+The opposing autonomy label ("human in the loop"), reserved for issues
+containing a step Claude Code can't or genuinely shouldn't perform itself
+even though the design is fully aligned — secrets/encrypted material,
+human-only auth ceremonies, irreversible external actions, spending money,
+external service provisioning (categories per github-formats). Never a
+parking spot for unfinished design: an unresolved decision means the issue
+isn't created yet. Its second cause is the **AFK SELF-DOWNGRADE**; the
+issue's `## Autonomy` line names which cause applies, and pickup reads it to
+choose between a go/no-go with a pause at the human step and a full grilling
+session.
 
 **AFK SELF-DOWNGRADE**:
 The safety valve on **AFK**: when orientation surfaces real ambiguity, the

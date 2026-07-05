@@ -67,6 +67,12 @@ CONTEXT.md or ADR change, to shrink the collision window. Remaining conflicts ar
 resolved at PR time. ADRs are named `issue-<number>-<topic-slug>.md` per
 `github-formats` — never a global sequential number.
 
+Grilling's target: every prospective issue can be tagged `afk`. Keep resolving design
+decisions until the only `hitl` left is capability/safety — a step Claude Code can't
+or shouldn't perform itself (per `github-formats`). A decision that can't be made yet
+means the work isn't needed yet: drop that issue from the batch rather than carrying
+it half-specified.
+
 The grilling is done only when the user says so. Never declare alignment yourself.
 
 ### Phase 3: CONFIRM ALIGNMENT
@@ -79,12 +85,20 @@ When the user signals the grilling is done:
    - title
    - a one-line description
    - **the afk/hitl classification with a one-line justification** (see
-     `github-formats`). Default to `hitl` when uncertain — `afk` is a promise that the
-     issue is airtight and mechanically verifiable.
+     `github-formats`). `afk` is the default; `hitl` only when the issue contains a
+     step Claude Code can't or genuinely shouldn't perform itself, with that step
+     named. Uncertainty is not a reason to tag `hitl` — it's a sign the grilling
+     isn't finished.
    - dependencies / rough ordering between issues.
 3. Ask the user to confirm or correct BOTH the understanding AND the breakdown,
    including the afk/hitl calls.
 4. Iterate until the user explicitly confirms. Only then proceed to Phase 4.
+
+Alignment is not confirmable while any proposed issue is neither `afk` nor
+capability/safety `hitl`. An issue still carrying an unresolved design decision is
+not ready: return to Phase 2 and grill the decision out, or drop the issue from this
+batch — a decision that can't be made yet means the work isn't needed yet. Never
+create an issue whose `hitl` label stands in for unfinished design.
 
 ### Phase 4: CREATE ISSUES
 
@@ -107,9 +121,9 @@ grilling.
 
 - A dialogue, not a wizard. The user can jump phases backward at any time; honor it,
   then resume the pipeline from the right phase.
-- Issue detail is calibrated by autonomy: `afk` issues need prescriptive detail (paths,
-  names, example payloads) because no grilling will fill gaps; `hitl` issues can state
-  intent and constraints since pickup will grill.
+- Every issue gets prescriptive detail (paths, names, example payloads) — no pickup
+  grilling will fill gaps. A `hitl` issue is just as fully specified as an `afk` one;
+  it differs only by naming its human-performed step.
 - If the feature clearly spans multiple epics or many issues, say so in Phase 3 and
   propose splitting into multiple planning sessions. If a single proposed scope is too
   big to grill in one sitting, recommend `/deconstruct` first.
