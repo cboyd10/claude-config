@@ -1,6 +1,6 @@
 ---
 name: pickup-issue-personal
-description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, self-reviews the diff via the bundled code-review skill, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk and human-step hitl compress to a single go/no-go (human-step hitl adds a planned pause at the step the human must perform), downgrade/judgment hitl runs a full grilling session. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
+description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, self-reviews the diff via the bundled code-review skill, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk and human-step hitl compress to a single go/no-go (human-step hitl adds a planned pause at the step the human must perform), downgrade/judgment hitl runs a full grilling session. Also defines UNATTENDED MODE, the no-user variant sweep-issues-personal subagents run in. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
 ---
 
 # pickup-issue-personal
@@ -214,6 +214,39 @@ before closing. Skip the offer if there was no signal.
 If any files were created or modified in a `skills/` directory of a `claude-config`
 repo during this implementation, run the `update-ios-instructions` skill as the
 final step.
+
+## Unattended mode (sweep-invoked)
+
+When your dispatch brief says you are a `sweep-issues-personal` subagent running in
+**UNATTENDED MODE**, there is no user in the loop. The phase spine above still
+applies, with these overrides — the `afk` label's promise (no open judgment) is what
+makes them safe:
+
+- **Phase 3 go/no-go is auto-granted.** Produce the alignment summary in your output
+  for the record, then proceed straight to Phase 4. Only `afk` issues are ever
+  dispatched unattended — if you find yourself holding a `hitl` issue, stop and
+  report FAILED; the orchestrator mis-dispatched.
+- **The afk self-downgrade ends the pickup instead of starting a grilling session.**
+  Relabel the issue `hitl`, update its `## Autonomy` section with the downgrade
+  cause, comment what you found, remove any worktree state you created, and exit
+  reporting DOWNGRADED. Never guess through the ambiguity.
+- **Base branch comes from the brief.** It may be a blocker's branch rather than
+  `main` (STACKED PR) — the PR then targets that branch, and its body carries both
+  `Closes #<n>` and the stacked-PR note per `github-formats`. For an octopus brief,
+  merge the named second blocker branch into your new branch before implementing.
+- **Phase 5 browser verification is skipped.** Tests/build/lint only; state
+  "verified by tests only — not exercised in a browser" in the PR body when the
+  diff touches UI.
+- **Phase 6 judgment calls**: apply only high-confidence fixes; record anything
+  judgment-shaped in the PR description. A finding that reveals real ambiguity is a
+  self-downgrade, same as Phase 2.
+- **Hard failure** (CI you cannot make green after honest attempts, broken
+  environment): comment your last known state on the issue (branch, PR link, what
+  failed), keep `in-progress`, add the `sweep-blocked` label, and exit reporting
+  FAILED. On a resume dispatch, remove `sweep-blocked` when you re-start work.
+- **Phase 7 retro offer is skipped** — include any RETRO SIGNAL in your completion
+  report instead, and do not run `update-ios-instructions` (you are not editing
+  skills).
 
 ## General conduct
 

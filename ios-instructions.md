@@ -85,6 +85,9 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **skill-retro**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/skill-retro/SKILL.md
 
+**sweep-issues-personal**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/sweep-issues-personal/SKILL.md
+
 **tdd**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/SKILL.md
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/tdd/deep-modules.md

@@ -30,7 +30,9 @@ One short paragraph: what the change is and why it matters. No implementation he
 or the pickup downgrade that relabeled this issue>
 
 ## Context
-Relevant files, modules, and prior issues. Link related issues with #<number>.
+Relevant files, modules, and prior issues. Hard blockers go on DEPENDS-ON LINEs
+(`Depends on #<number>`, one per line — see Dependencies below); link merely
+related issues as plain `Related: #<number>` prose.
 Point at domain terms in `.claude/context/CONTEXT.md` where they apply. This is the
 orientation an agent needs before touching code — give it the map, not the territory.
 
@@ -99,6 +101,19 @@ means the work isn't needed yet; that issue simply isn't created in this batch. 
 `afk` tag is still a claim that the issue is airtight — the way to keep that claim
 true is to grill until it is, not to downgrade the label.
 
+## Dependencies — the DEPENDS-ON LINE
+
+The canonical, machine-readable dependency signal, read by `sweep-issues-personal`
+to build its dispatch graph and written by `plan-to-github`:
+
+- Exactly the phrase `Depends on #<number>` on its own line inside the issue's
+  `## Context` section. One blocker per line; nothing else on the line.
+- A DEPENDS-ON LINE asserts a **true build-order constraint** — this issue cannot be
+  implemented until that one is. Mere relatedness is linked as plain prose
+  (`Related: #<number>`), which the sweep ignores.
+- This text convention is the sole signal: the GitHub MCP does not expose native
+  blocked-by relationships (adopting them when it does is a ROADMAP seed).
+
 ## Labels
 
 Apply these labels via the GitHub MCP. Create them in the repo if they don't exist.
@@ -107,6 +122,9 @@ Apply these labels via the GitHub MCP. Create them in the repo if they don't exi
 - `in-progress` — applied by pickup when a worktree is created.
 - `in-review` — applied by pickup when the PR is promoted from draft to ready;
   remove `in-progress` at the same time.
+- `sweep-blocked` — applied (alongside `in-progress`) when an UNATTENDED MODE pickup
+  hits a hard failure; the failure detail lives in an issue comment. Removed by the
+  next dispatch of that issue.
 
 ## Naming conventions
 
@@ -132,3 +150,21 @@ Shared so concurrent agents never collide and humans can read directories at a g
 - Open the PR as a **draft** after the first commit; promote to **ready for review**
   when the implementation slice is complete and tests pass.
 - When the PR opens, post one comment on the issue linking the PR.
+
+### Stacked PRs
+
+A STACKED PR implements an issue whose blocker is PR-ready but unmerged: its branch
+is created from the blocker's branch, and the PR **targets the blocker's branch**,
+not `main`.
+
+- The body still contains `Closes #<number>`, plus the note:
+  `Stacked on #<blocker-PR> — merge that first.`
+- **Merge bottom-up, by the user, never by an agent**: merge the blocker's PR to
+  `main` and delete its branch (enable branch auto-delete) — GitHub then retargets
+  the still-open children onto `main`, so every `Closes #<number>` fires when its
+  own PR merges.
+- **Octopus (exactly two unmerged blockers)**: the branch bases on the
+  lowest-numbered blocker's branch and merges the other blocker's branch in
+  immediately; the PR targets the base blocker's branch and its body notes that the
+  diff includes the second blocker's commits until that blocker merges. Three or
+  more unmerged blockers are never stacked — the issue waits.
