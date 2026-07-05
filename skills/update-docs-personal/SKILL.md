@@ -132,7 +132,8 @@ yourself.
 ### Phase 7: WRITE
 
 1. Offer to create a quick GitHub issue for the docs work via the MCP (per
-   `github-formats`, labeled `hitl` since grilling already happened) — it gives
+   `github-formats`, labeled `afk` — grilling already happened, so the work is
+   fully aligned and Claude Code completes it in this session) — it gives
    the PR something to close. If the user accepts, the branch slug is
    `issue-<number>-update-docs`; if they'd rather skip the issue, use
    `docs-update-YYYY-MM-DD`. If STATE.md records an active branch from an

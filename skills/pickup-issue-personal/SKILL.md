@@ -1,6 +1,6 @@
 ---
 name: pickup-issue-personal
-description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, self-reviews the diff via the bundled code-review skill, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk compresses to a single go/no-go, hitl runs a full grilling session. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
+description: Pick up a GitHub issue for implementation on a PERSONAL project. Accepts a GitHub issue number/URL, fetches it via the GitHub MCP, creates a Git WORKTREE (not a plain branch) so multiple agents can run concurrently, runs grill-with-docs to reach alignment, implements (TDD when testable logic changes), opens a draft PR, keeps the issue updated, self-reviews the diff via the bundled code-review skill, and promotes the PR to ready so merging to main auto-closes the issue. Honors the issue's afk/hitl autonomy label: afk and human-step hitl compress to a single go/no-go (human-step hitl adds a planned pause at the step the human must perform), downgrade/judgment hitl runs a full grilling session. Use when the user says "pick up issue #N" on a personal/GitHub project or invokes /pickup-issue-personal. The GitHub/worktree counterpart to pickup-issue.
 ---
 
 # pickup-issue-personal
@@ -67,9 +67,19 @@ Output a brief orientation summary (5 lines max), then move to Phase 2.
 
 Read the `tdd` and `grill-with-docs` SKILL.md files as needed.
 
-**If the issue is `hitl`:** run the full `grill-with-docs` session — one question at a
-time, each with a recommended answer, until the user explicitly confirms alignment.
-This is the pair-programming path.
+**If the issue is `hitl`:** read its `## Autonomy` section for the cause — there are
+two flavors (per `github-formats`):
+
+- **Human-step `hitl`** — the line names a step Claude Code can't or shouldn't
+  perform itself (secrets/encrypted material, auth ceremonies, irreversible external
+  actions, spending, external service provisioning). The design is already fully
+  aligned. Treat it like `afk` — single go/no-go in Phase 3 — plus a planned pause:
+  when implementation reaches the named step, stop, hand it to the user, and resume
+  once they confirm it's done.
+- **Downgrade/judgment `hitl`** — relabeled by a previous pickup's self-downgrade, or
+  the Autonomy line names no concrete human step. Run the full `grill-with-docs`
+  session — one question at a time, each with a recommended answer, until the user
+  explicitly confirms alignment. This is the pair-programming path.
 
 **If the issue is `afk`:** do NOT run a multi-question grilling. Instead, ORIENT
 thoroughly, then go straight to a single CONFIRM ALIGNMENT summary + work plan (Phase 3)
@@ -80,7 +90,9 @@ real ambiguity, an unresolved decision, a contradiction between the issue and th
 or anything requiring human judgment that the issue did not settle — **stop and
 downgrade to `hitl`**: say so plainly ("this was tagged afk but X is unresolved —
 switching to grilling") and run the full session. Guessing wrong autonomously costs
-more than one extra question. When you downgrade, note it; it's useful retrospective
+more than one extra question. When you downgrade, update the issue's `## Autonomy`
+section to record the downgrade cause — a later pickup must be able to tell this
+`hitl` means "grill", not "human step" — and note it; it's useful retrospective
 signal that the planning under-specified the issue.
 
 Apply `grill-with-docs`'s general discipline (its stack guidance lives in
@@ -101,8 +113,9 @@ Summarize:
    slug `issue-<number>-<short-slug>`, directory `../<repo>-worktrees/<slug>/`, branch
    = slug. Base branch defaults to `main` (use another if the user names one).
 
-For `hitl`: ask for confirmation and iterate until explicit.
-For `afk`: present this as the single go/no-go. On "go", proceed.
+For downgrade/judgment `hitl`: ask for confirmation and iterate until explicit.
+For `afk` and human-step `hitl`: present this as the single go/no-go (for human-step
+`hitl`, say where the pause for the human step will land). On "go", proceed.
 
 ### Phase 4: WORKTREE
 
@@ -164,10 +177,11 @@ visible and CI starts, and continue implementing on the same branch.
    unavailable, do a manual correctness pass over the same diff. Then triage:
    - **Confirmed correctness bugs** — fix and push (through `tdd` when the fix
      touches testable logic: failing test first).
-   - **Judgment calls** — for `hitl` issues, surface them to the user before
-     promoting. For `afk` issues, apply only high-confidence fixes and record
-     anything judgment-shaped in the PR description; a finding that reveals real
-     ambiguity is an afk self-downgrade trigger, same as in Phase 2.
+   - **Judgment calls** — for downgrade/judgment `hitl` issues, surface them to the
+     user before promoting. For `afk` and human-step `hitl` issues, apply only
+     high-confidence fixes and record anything judgment-shaped in the PR
+     description; a finding that reveals real ambiguity is an afk self-downgrade
+     trigger, same as in Phase 2.
    - **False positives / out-of-scope findings** — skip, with a one-line note.
    Never silently expand scope beyond the Phase 3 alignment. This gate is your
    own reviewer pass — on a personal project there is no coworker review behind
@@ -206,8 +220,9 @@ final step.
 - Never create the worktree before Phase 3 confirmation (the single go/no-go counts for
   `afk`).
 - Branch name is always exactly the slug — no modification.
-- The afk/hitl label sets grilling depth, but the self-downgrade always wins:
-  uncertainty turns an `afk` issue into a grilled one.
+- The afk/hitl label (and for `hitl`, the cause named in its Autonomy section) sets
+  grilling depth, but the self-downgrade always wins: uncertainty turns an `afk` or
+  human-step `hitl` issue into a grilled one.
 - If the issue is too big for one PR, say so in Phase 3 and propose splitting before
   creating the worktree.
 - The user can jump phases backward at any time. Honor it, then resume.

@@ -26,7 +26,8 @@ One short paragraph: what the change is and why it matters. No implementation he
 ## Autonomy
 `afk` — <one-line justification of why an agent can complete this unattended>
 <!-- or -->
-`hitl` — <one line naming the human judgment / decision this issue still needs>
+`hitl` — <one line naming the step Claude Code can't or shouldn't perform itself,
+or the pickup downgrade that relabeled this issue>
 
 ## Context
 Relevant files, modules, and prior issues. Link related issues with #<number>.
@@ -39,10 +40,10 @@ orientation an agent needs before touching code — give it the map, not the ter
 - [ ] Phrased as observable behavior or state, not implementation steps.
 
 ## Implementation Notes
-Suggested approach, existing patterns to follow, known gotchas. Be MORE prescriptive
-for `afk` issues (file paths, function names, example payloads) because no grilling
-will fill the gaps. Be LIGHTER for `hitl` issues — the agent will grill before
-building, so over-specifying here is wasted.
+Suggested approach, existing patterns to follow, known gotchas. Every issue gets the
+same prescriptive depth (file paths, function names, example payloads) — no pickup
+grilling will fill gaps. A `hitl` issue is just as fully specified as an `afk` one;
+it differs only by naming its human-performed step.
 
 ## Out of Scope
 What this issue explicitly does not cover. Write "None." if nothing applies.
@@ -54,12 +55,37 @@ The single highest-leverage field. It tells `pickup-issue-personal` how much hum
 involvement an issue needs, so it must be trustworthy enough that a pickup agent can
 act on it without re-deriving the reasoning.
 
-- **`afk`** — "away from keyboard." High confidence a Claude Code agent can complete
-  this end to end unattended. The issue is fully specified, the acceptance criteria
-  are mechanically verifiable, and no external decision or domain judgment remains.
-- **`hitl`** — "human in the loop." The issue needs human judgment somewhere:
-  an unresolved design decision, fuzzy requirements, a risky/irreversible change, or
-  domain knowledge not captured in the repo. Pickup will run a full grilling session.
+- **`afk`** — "away from keyboard." **The default.** Every issue leaves planning
+  fully specified — all design decisions pre-made, acceptance criteria mechanically
+  verifiable, no external decision or domain judgment remaining — so a Claude Code
+  agent can complete it end to end unattended.
+- **`hitl`** — "human in the loop." Reserved for issues containing a step Claude Code
+  **can't or genuinely shouldn't perform itself, even though the design is fully
+  aligned**. The `## Autonomy` line names that step. `hitl` is never a parking spot
+  for unfinished design work.
+
+The governing principle: **if Claude Code can do it inside the codebase and tooling
+it has access to, and it isn't a security concern, it is `afk`.** Illustrative (not
+exhaustive) `hitl` categories:
+
+- **Secrets & encrypted material** — work requiring plaintext secrets the agent
+  can't or shouldn't touch: SOPS-encrypted values, production `.env` contents,
+  credential rotation.
+- **Human-only auth ceremonies** — steps gated on a human identity: 2FA prompts,
+  OAuth consent screens, app-store/registrar/cloud-console actions on accounts the
+  agent can't hold.
+- **Irreversible external actions** — one-way operations outside the repo:
+  destructive production data migrations, sending real emails/notifications to
+  users, deleting cloud resources.
+- **Spending money** — purchases, plan upgrades, paid API tier changes.
+- **External service provisioning** — account creation, identity verification, and
+  token generation on third-party services (e.g. setting up a Plaid account).
+
+A second, pickup-time cause of `hitl` exists: the **afk self-downgrade**, when
+`pickup-issue-personal` finds ambiguity planning missed and relabels the issue. The
+`## Autonomy` section must say which cause applies — pickup reads it to choose
+between a single go/no-go with a planned pause at the human step (planning-time
+`hitl`) and a full grilling session (downgrade `hitl`).
 
 Two parallel signals carry the classification, and they must agree:
 
@@ -67,9 +93,11 @@ Two parallel signals carry the classification, and they must agree:
 2. **The `## Autonomy` section** in the body — the human-readable justification, so a
    reviewer (and a pickup agent) understands *why* the call was made without guessing.
 
-When in doubt, classify `hitl`. The cost of one unnecessary grilling is far lower than
-the cost of an agent guessing wrong on an under-specified `afk` issue. An `afk` tag is
-a claim that the issue is airtight; only make it when that is true.
+Doubt about a classification means the grilling isn't finished: resolve the doubt and
+tag `afk` — do not park it under `hitl`. A design decision that can't be made yet
+means the work isn't needed yet; that issue simply isn't created in this batch. An
+`afk` tag is still a claim that the issue is airtight — the way to keep that claim
+true is to grill until it is, not to downgrade the label.
 
 ## Labels
 
