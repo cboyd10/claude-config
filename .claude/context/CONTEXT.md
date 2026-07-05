@@ -82,7 +82,47 @@ session.
 **AFK SELF-DOWNGRADE**:
 The safety valve on **AFK**: when orientation surfaces real ambiguity, the
 pickup agent stops, relabels the issue **HITL**, and waits — it never guesses
-through an ambiguity the label promised was absent.
+through an ambiguity the label promised was absent. In **UNATTENDED MODE**
+there is no user to wait for: the downgrade relabels, comments the cause on
+the issue, and aborts that pickup instead.
+
+### Sweep
+
+**SWEEP**:
+The batch-autonomy flow (sweep-issues-personal): work a repo's open **AFK**
+backlog in dependency order via concurrent unattended pickups (default cap 3),
+opening a PR per issue, until every dispatchable issue is in PR or the usage
+limit kills the run. **HITL** issues and everything transitively downstream of
+one are excluded from the pool. Every state transition is persisted to GitHub
+as it happens; re-running the sweep is the resume mechanism.
+
+**UNATTENDED MODE**:
+The sweep-invoked variant of pickup-issue-personal: the Phase 3 go/no-go is
+auto-granted (that is the **AFK** label's promise), browser verification is
+skipped, and an **AFK SELF-DOWNGRADE** ends the pickup rather than starting a
+grilling session.
+
+**DEPENDS-ON LINE**:
+The canonical machine-readable dependency signal: a `Depends on #<N>` line in
+an issue's `## Context` section, one blocker per line. Written by
+plan-to-github; read by the **SWEEP** to build its dependency graph. Sole
+signal until the GitHub MCP exposes native blocked-by relationships (ROADMAP
+seed).
+
+**STACKED PR**:
+A PR whose base is an unmerged blocker's branch instead of `main`, created
+when the **SWEEP** dispatches a blocked issue after its blocker's PR reaches
+ready-for-review. Merged bottom-up: blocker to `main` first (GitHub retargets
+the child on branch deletion), then the child — so `Closes #<N>` fires for
+every issue. With exactly two unmerged blockers the child bases on the
+lowest-numbered one and merges the other in (octopus); three or more unmerged
+blockers means the issue waits.
+
+**SWEEP-BLOCKED**:
+The label recording a hard **SWEEP** failure (unfixable CI, crash) on an issue
+that also keeps `in-progress`; the failure detail lives in an issue comment.
+Dependents are skipped for the rest of that run. Cleared when a rerun
+re-dispatches the issue.
 
 ### Planning records
 
@@ -186,6 +226,12 @@ is what an **IMPLEMENTATION HANDOFF** records.
 - Every personal GitHub issue carries exactly one of **AFK** or **HITL**; an
   **AFK SELF-DOWNGRADE** moves an issue from AFK to HITL, and nothing moves it
   back automatically.
+- A **SWEEP** dispatches each pool issue as a pickup-issue-personal run in
+  **UNATTENDED MODE**; the **DEPENDS-ON LINE** graph sets dispatch order, and
+  a blocked issue lands as a **STACKED PR** on its blocker's branch.
+- A mid-sweep **AFK SELF-DOWNGRADE** or **SWEEP-BLOCKED** failure removes that
+  issue's transitive dependents from the rest of the run, exactly as a
+  planning-time **HITL** label does up front.
 - A decision passing the **ADR TEST** during planning is recorded under
   **DECISIONS MADE THIS SESSION**; update-docs harvests that entry into an ADR
   post-implementation.
