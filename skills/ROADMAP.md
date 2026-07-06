@@ -19,6 +19,8 @@ grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
   text fallback. Deferred 2026-07-05 during the sweep-issues-personal grilling
   session.
 
+- **update-docs: module README template — optional Key Data Structures and Configuration Reference sections.** Surfaced 2026-07-06 during an update-docs session on duebotv3 (migrator-service). The template ends at Running tests; for Spring Boot services with complex domain objects, two extra sections proved genuinely useful: Key Data Structures (field-by-field tables for core entities/DTOs) and Configuration Reference (one-row-per-property table for all `application.*` properties). Both were kept in the rewritten doc. Open questions for grilling: optional sections vs a separate "data-heavy" template variant; whether the duplication with Javadoc/OpenAPI is load-bearing (junior-friendly prose) or noise; drift signals (class-name grep for data structures, `application*.yml` changes for config reference).
+
 ## Pending chore
 
 - Decide whether the `bitbucket_pr_to_review` script (currently
