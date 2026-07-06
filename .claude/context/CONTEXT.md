@@ -202,10 +202,15 @@ oversized retro findings.
 ### Implementation
 
 **VERTICAL SLICE**:
-tdd's unit of work: one behavior driven end-to-end by a single test before
-the next begins, tracer-bullet style. Horizontal slicing (all tests, then all
-code) is the named anti-pattern. Slice state (done / in flight / remaining)
-is what an **IMPLEMENTATION HANDOFF** records.
+The decomposition principle preferred at every scale of this suite: a unit
+of work that cuts through all layers end-to-end, so it is exercisable and
+testable on its own. Applied at three scales — a deconstruct piece, a
+planning-phase issue (jira-formats' parent-issue rule), and tdd's unit of
+work (one behavior driven end-to-end by a single test before the next
+begins, tracer-bullet style). Horizontal slicing — splitting by layer or
+by like-kind work — is the named anti-pattern at every scale. tdd-scale
+slice state (done / in flight / remaining) is what an **IMPLEMENTATION
+HANDOFF** records.
 
 ## Relationships
 

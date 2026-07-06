@@ -28,6 +28,7 @@ If the gate passes, grill — but shallowly. Your job is to map the cut lines, n
 - Interview one question at a time, waiting for feedback before continuing. For each question, give your recommended answer.
 - If a question can be answered by exploring the codebase, explore instead of asking.
 - Grill toward sub-goals, dependencies, and boundaries — nothing deeper. The moment you find yourself resolving a decision that belongs *inside* a piece, stop: that's the per-piece grill-with-docs session's job, not yours. Pulling it forward rebuilds the oversized session you're trying to escape.
+- Prefer **vertical seams**. Cut so each piece pairs its backend/domain logic with whatever UI or interface is needed to exercise it, making every piece testable end-to-end on its own. Never default to horizontal layers (all backend pieces, then all UI pieces). A horizontal piece is a flagged exception: propose it only when no vertical cut is feasible (pure infrastructure, a cross-cutting migration, a scope with no UI), with a one-line justification the user can veto.
 - When the user uses a term that conflicts with the glossary in `.claude/context/CONTEXT.md`, call it out immediately.
 
 ## 3. Don't force a bad split

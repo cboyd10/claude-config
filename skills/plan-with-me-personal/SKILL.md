@@ -81,7 +81,12 @@ When the user signals the grilling is done:
 
 1. Summarize the shared understanding in 3–7 bullets: the change, key decisions, scope
    boundaries (what's explicitly OUT), and dependencies.
-2. Propose the issue breakdown as a short list. For EACH proposed issue include:
+2. Propose the issue breakdown as a short list. **Slice vertically:** each issue
+   covers every layer needed to exercise its capability end-to-end, so it is
+   testable on its own when merged (stub sibling capabilities that aren't built
+   yet). Never split issues horizontally by layer; a horizontal issue is a
+   flagged exception carrying a one-line justification for why no vertical cut
+   is feasible. For EACH proposed issue include:
    - title
    - a one-line description
    - **the afk/hitl classification with a one-line justification** (see
