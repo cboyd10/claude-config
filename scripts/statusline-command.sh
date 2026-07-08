@@ -98,67 +98,68 @@ if [ "$MODE" = "cost" ]; then
     fi
   }
 
-  # Cross-session window token accumulator.
-  # Reads/writes a JSON state file; sets globals _WIN_IN and _WIN_OUT.
-  # State format: {"resets_at":N,"accum_in":N,"accum_out":N,"prev_in":N,"prev_out":N}
-  _track_window() {
-    local state_file="$1" cur_reset="${2:-0}" cur_in_v="${3:-0}" cur_out_v="${4:-0}"
-    local stored_reset=0 accum_in=0 accum_out=0 prev_in=0 prev_out=0
+  # Pull costs from ccusage logs (includes subagents); fall back to token math
+  session_id=$(echo "$input" | jq -r '.session_id // empty')
+  now_epoch=$(date +%s)
+  five_h_ago=$(( now_epoch - 18000 ))
+  seven_d_ago=$(( now_epoch - 604800 ))
+  thirty_d_ago=$(( now_epoch - 2592000 ))
 
-    if [ -f "$state_file" ]; then
-      stored_reset=$(jq -r '.resets_at // 0' "$state_file" 2>/dev/null || echo 0)
-      accum_in=$(    jq -r '.accum_in  // 0' "$state_file" 2>/dev/null || echo 0)
-      accum_out=$(   jq -r '.accum_out // 0' "$state_file" 2>/dev/null || echo 0)
-      prev_in=$(     jq -r '.prev_in   // 0' "$state_file" 2>/dev/null || echo 0)
-      prev_out=$(    jq -r '.prev_out  // 0' "$state_file" 2>/dev/null || echo 0)
+  ccusage_json=$(npx --yes ccusage session --json --no-color 2>/dev/null)
+
+  session_total=""
+  five_cost=""
+  week_cost=""
+  thirty_cost=""
+
+  if [ -n "$ccusage_json" ]; then
+    if [ -n "$session_id" ]; then
+      session_total=$(echo "$ccusage_json" | jq -r --arg sid "$session_id" \
+        '(.session // [])[] | select(.period == $sid) | .totalCost' 2>/dev/null | head -1)
     fi
 
-    if [ "$cur_reset" != "${stored_reset:-0}" ]; then
-      # Rate-limit window rolled over — start fresh
-      accum_in=0; accum_out=0; prev_in=0; prev_out=0
-    elif [ "${cur_in_v:-0}" -lt "${prev_in:-0}" ] 2>/dev/null; then
-      # Session token count went backwards — new Claude Code session started
-      accum_in=$(( accum_in + prev_in ))
-      accum_out=$(( accum_out + prev_out ))
-      prev_in=0; prev_out=0
-    fi
+    five_cost=$(echo "$ccusage_json" | jq -r --argjson t "$five_h_ago" \
+      '[(.session // [])[] | select(.metadata.lastActivity != null) |
+        select((.metadata.lastActivity | split(".")[0] | strptime("%Y-%m-%dT%H:%M:%S") | mktime) >= $t) |
+        .totalCost] | add // 0' 2>/dev/null)
 
-    printf '{"resets_at":%s,"accum_in":%s,"accum_out":%s,"prev_in":%s,"prev_out":%s}\n' \
-      "$cur_reset" "$accum_in" "$accum_out" "$cur_in_v" "$cur_out_v" > "$state_file"
+    week_cost=$(echo "$ccusage_json" | jq -r --argjson t "$seven_d_ago" \
+      '[(.session // [])[] | select(.metadata.lastActivity != null) |
+        select((.metadata.lastActivity | split(".")[0] | strptime("%Y-%m-%dT%H:%M:%S") | mktime) >= $t) |
+        .totalCost] | add // 0' 2>/dev/null)
 
-    _WIN_IN=$(( accum_in + cur_in_v ))
-    _WIN_OUT=$(( accum_out + cur_out_v ))
-  }
-
-  # Try raw window token fields first (may be absent in current JSON schema)
-  five_in_raw=$(echo "$input"  | jq -r '.rate_limits.five_hour.used_input_tokens  // empty')
-  five_out_raw=$(echo "$input" | jq -r '.rate_limits.five_hour.used_output_tokens // empty')
-  week_in_raw=$(echo "$input"  | jq -r '.rate_limits.seven_day.used_input_tokens  // empty')
-  week_out_raw=$(echo "$input" | jq -r '.rate_limits.seven_day.used_output_tokens // empty')
-
-  FIVE_STATE="$HOME/.claude/statusline_5h_state"
-  SEVEN_STATE="$HOME/.claude/statusline_7d_state"
-
-  if [ -n "$five_in_raw" ]; then
-    five_win_in="$five_in_raw"; five_win_out="${five_out_raw:-0}"
-  else
-    _track_window "$FIVE_STATE" "${five_reset:-0}" "$cur_in" "$cur_out"
-    five_win_in="$_WIN_IN"; five_win_out="$_WIN_OUT"
+    thirty_cost=$(echo "$ccusage_json" | jq -r --argjson t "$thirty_d_ago" \
+      '[(.session // [])[] | select(.metadata.lastActivity != null) |
+        select((.metadata.lastActivity | split(".")[0] | strptime("%Y-%m-%dT%H:%M:%S") | mktime) >= $t) |
+        .totalCost] | add // 0' 2>/dev/null)
   fi
 
-  if [ -n "$week_in_raw" ]; then
-    week_win_in="$week_in_raw"; week_win_out="${week_out_raw:-0}"
-  else
-    _track_window "$SEVEN_STATE" "${week_reset:-0}" "$cur_in" "$cur_out"
-    week_win_in="$_WIN_IN"; week_win_out="$_WIN_OUT"
-  fi
+  # Dollar costs — token-based fallbacks when ccusage data is absent
+  session_in_cost=$( awk "BEGIN { printf \"%.4f\", ${cur_in}  * $INPUT_PRICE }")
+  session_out_cost=$(awk "BEGIN { printf \"%.4f\", ${cur_out} * $OUTPUT_PRICE }")
 
-  # Dollar costs
-  session_in_cost=$( awk "BEGIN { printf \"%.4f\", ${cur_in}           * $INPUT_PRICE }")
-  session_out_cost=$(awk "BEGIN { printf \"%.4f\", ${cur_out}          * $OUTPUT_PRICE }")
-  session_total=$(   awk "BEGIN { printf \"%.4f\", ${cur_in}           * $INPUT_PRICE + ${cur_out}          * $OUTPUT_PRICE }")
-  five_cost=$(       awk "BEGIN { printf \"%.4f\", ${five_win_in:-0}   * $INPUT_PRICE + ${five_win_out:-0}  * $OUTPUT_PRICE }")
-  week_cost=$(       awk "BEGIN { printf \"%.4f\", ${week_win_in:-0}   * $INPUT_PRICE + ${week_win_out:-0}  * $OUTPUT_PRICE }")
+  _fmt_cost() { printf "%.4f" "${1:-0}" 2>/dev/null || echo "${1:-0}"; }
+
+  if [ -z "$session_total" ] || [ "$session_total" = "null" ]; then
+    session_total=$(awk "BEGIN { printf \"%.4f\", ${cur_in} * $INPUT_PRICE + ${cur_out} * $OUTPUT_PRICE }")
+  else
+    session_total=$(_fmt_cost "$session_total")
+  fi
+  if [ -z "$five_cost" ] || [ "$five_cost" = "null" ]; then
+    five_cost=$(awk "BEGIN { printf \"%.4f\", ${cur_in} * $INPUT_PRICE + ${cur_out} * $OUTPUT_PRICE }")
+  else
+    five_cost=$(_fmt_cost "$five_cost")
+  fi
+  if [ -z "$week_cost" ] || [ "$week_cost" = "null" ]; then
+    week_cost=$(awk "BEGIN { printf \"%.4f\", ${cur_in} * $INPUT_PRICE + ${cur_out} * $OUTPUT_PRICE }")
+  else
+    week_cost=$(_fmt_cost "$week_cost")
+  fi
+  if [ -z "$thirty_cost" ] || [ "$thirty_cost" = "null" ]; then
+    thirty_cost=$(awk "BEGIN { printf \"%.4f\", ${cur_in} * $INPUT_PRICE + ${cur_out} * $OUTPUT_PRICE }")
+  else
+    thirty_cost=$(_fmt_cost "$thirty_cost")
+  fi
 
   in_str=$( _fmt_tok "$cur_in")
   out_str=$(_fmt_tok "$cur_out")
@@ -169,7 +170,8 @@ if [ "$MODE" = "cost" ]; then
   parts+=("$(printf "${STEEL}%s out (\$%s)${RESET}" "$out_str" "$session_out_cost")")
   parts+=("$(printf "${OLIVE}session \$%s${RESET}"  "$session_total")")
   parts+=("$(printf "${ORANGE}5h \$%s${RESET}"      "$five_cost")")
-  parts+=("$(printf "${BURNT}7d \$%s${RESET}"       "$week_cost")")
+  parts+=("$(printf "${BURNT}7d \$%s${RESET}"        "$week_cost")")
+  parts+=("$(printf "${RED}30d \$%s${RESET}"         "$thirty_cost")")
 
   sep=" | "
   result=""
