@@ -191,6 +191,17 @@ visible and CI starts, and continue implementing on the same branch.
      the connected MCP — do not guess), find the latest run for the branch and poll
      until it reaches a terminal state (`completed`, `failure`, `cancelled`).
    - On failure, diagnose and fix: push a corrective commit, then re-poll the new run.
+   - **CI fails but the branch passes locally → check for a stale base FIRST,
+     before rerunning CI or blaming the environment.** `pull_request` CI does not
+     test your branch — it tests the merge of your branch into the current base
+     branch. With concurrent agents merging to `main`, the branch's base is
+     routinely stale. Reproduce what CI actually ran:
+     `git fetch origin <base-branch> && git merge origin/<base-branch>` (on the
+     branch, or on a throwaway branch if you want to inspect before committing),
+     then re-run the failing suite locally. If the failure reproduces, the branch
+     was stale: keep the merge, fix the failure on the merged tree, and push
+     both. Only if the merged tree passes locally and CI still fails may you
+     consider environment flakiness.
    - Do not promote until the run concludes with `conclusion: success`.
 6. **Once CI is green**, promote the PR from draft to **ready for review**. Via MCP,
    swap labels: remove `in-progress`, add `in-review`.
