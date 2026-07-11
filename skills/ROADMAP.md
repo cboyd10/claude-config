@@ -21,6 +21,15 @@ grill-with-docs session. Written 2026-07-02 during the Sonnet-readiness audit.
 
 - **update-docs: module README template — optional Key Data Structures and Configuration Reference sections.** Surfaced 2026-07-06 during an update-docs session on duebotv3 (migrator-service). The template ends at Running tests; for Spring Boot services with complex domain objects, two extra sections proved genuinely useful: Key Data Structures (field-by-field tables for core entities/DTOs) and Configuration Reference (one-row-per-property table for all `application.*` properties). Both were kept in the rewritten doc. Open questions for grilling: optional sections vs a separate "data-heavy" template variant; whether the duplication with Javadoc/OpenAPI is load-bearing (junior-friendly prose) or noise; drift signals (class-name grep for data structures, `application*.yml` changes for config reference).
 
+- **wrap-up: PLANNING-PERSONAL.md format.** `plan-with-me-personal` sessions
+  (GitHub-only, no `jira-planning/` archive) have no defined wrap-up handoff
+  shape; `wrap-up` currently only knows the Jira-planning-folder format. Needs a
+  `PLANNING-PERSONAL.md` counterpart covering: original request, references
+  (repo files + relevant GitHub issue numbers), what's aligned vs. not-yet-aligned
+  from grilling, and a resume point — without assuming a local planning archive.
+  Surfaced 2026-07-10 during an ad hoc `plan-with-me-personal` wrap-up on
+  astrowatch (cleanup batch), which had to invent this shape from scratch.
+
 ## Pending chore
 
 - Decide whether the `bitbucket_pr_to_review` script (currently
