@@ -48,13 +48,14 @@ Before presenting anything to the user:
 3. PR hygiene check. The title should contain the Jira issue number and a
    summary; the description should cover what changed, why, and how to test. Any
    miss becomes a PR-level note, not a blocker on its own.
-4. Locate the acceptance criteria with a three-step fallback:
+4. Locate the acceptance criteria with a three-step fallback (in a work repo,
+   resolve the shared-doc root per `WORKTREE-CONTEXT.md` before this lookup):
    a. Look up the Jira slug from the PR title in `.claude/jira-planning/issues.csv`;
       if found, read the referenced planning file for the ACs.
    b. Otherwise, use the PR description as the AC source.
    c. Otherwise, ask the user to paste the Jira issue description and ACs.
 5. Read `.claude/context/CONTEXT.md` and `docs/adr/` (or legacy
-   `.claude/context/adr/`) if they exist.
+   `.claude/context/adr/`) if they exist (same resolved root as step 4).
 
 Output a brief orientation summary (3–5 lines: PR title, author, branch,
 existing-feedback count, and **which AC source you are reviewing against**).

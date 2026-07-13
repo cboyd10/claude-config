@@ -59,7 +59,7 @@ When you state how something currently works, cite the file. If the user's descr
 
 ### 1. Explore
 
-Read the project's domain glossary (`.claude/context/CONTEXT.md`) and any ADRs in `docs/adr/` (or legacy `.claude/context/adr/`) first.
+Read the project's domain glossary (`.claude/context/CONTEXT.md`) and any ADRs in `docs/adr/` (or legacy `.claude/context/adr/`) first. In a work repo, resolve the shared-doc root per [../WORKTREE-CONTEXT.md](../WORKTREE-CONTEXT.md) before reading `CONTEXT.md`.
 
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Require
 the report contract in [../grill-with-docs/EXPLORATION.md](../grill-with-docs/EXPLORATION.md). Don't follow rigid heuristics — explore organically and note where you experience friction:

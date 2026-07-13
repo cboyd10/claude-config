@@ -25,7 +25,8 @@ stack-concrete, runnable on a fresh Linux work laptop.
 | `docs/api-reference-{service}.md` | Endpoint reference, one file per backend service. |
 | `docs/adr/` | Architectural decision records, per `ADR-FORMAT.md` in this skill directory. |
 | Module `README.md` (each backend service and client) | Architecture and structure in technical detail, patterns explained, Mermaid diagrams for core/complex areas, and how to run that module's unit/integration tests. |
-| `.claude/context/CONTEXT.md` | Domain glossary — owned by grill-with-docs, NOT by these formats. Docs link to it rather than redefining terms. |
+| `docs/glossary.md` | Published domain glossary for doc readers — terms committed docs link to. Synced from `.claude/context/CONTEXT.md` by update-docs; owned by these formats. |
+| `.claude/context/CONTEXT.md` | Local, uncommitted working glossary — owned by grill-with-docs. Source of truth during planning/grilling; update-docs publishes confirmed terms into `docs/glossary.md`. Gitignored here, so every worktree redirects to the main/master worktree's copy — see `WORKTREE-CONTEXT.md`. |
 
 Design decisions are summarized in module docs only as brief references that link
 to the ADR — never duplicated in full.
@@ -44,7 +45,7 @@ to the ADR — never duplicated in full.
 ## Writing conventions
 
 - **Audience calibration:** assume a brand-new junior dev on a fresh Linux work
-  laptop. No undefined acronyms — link `.claude/context/CONTEXT.md` terms or define
+  laptop. No undefined acronyms — link `docs/glossary.md` terms or define
   inline. Explain the *why* alongside the *what*.
 - **Cite code as repo-relative paths in backticks** (e.g.
   `service/src/main/java/.../MasterService.java`). This is both junior-friendly
@@ -85,7 +86,7 @@ New to {app}? Read these in order:
 
 - [API reference](docs/api-reference-{service}.md)
 - [Architectural decisions](docs/adr/)
-- Domain glossary: `.claude/context/CONTEXT.md`
+- [Domain glossary](docs/glossary.md)
 ```
 
 ### docs/quickstart.md
@@ -222,6 +223,27 @@ purpose and shape, not full OpenAPI verbosity:
 If the service already runs springdoc/Swagger, keep entries thinner and link the
 Swagger UI instead of duplicating schemas.
 
+### docs/glossary.md
+
+```markdown
+# Domain Glossary
+
+Terms used across {app} documentation and code. Docs link here rather than
+redefining terms inline.
+
+---
+
+## {Term}
+
+{Definition in the app's domain — what it is, why it exists, how it relates to
+other terms. Link related terms inline where useful.}
+```
+
+Published subset of `.claude/context/CONTEXT.md`'s confirmed terms — copy
+definitions verbatim; do not redefine them here. Order alphabetically
+(case-insensitive) by term name — CONTEXT.md's authoring order does not need
+to match.
+
 ### Module README.md (backend service or Angular client)
 
 ```markdown
@@ -269,6 +291,7 @@ suspect. A doc is invalidated when the window's commits touch:
 | `api-reference-{service}.md` | That service's controllers (exact check: set-diff endpoints in doc vs `@RestController` mappings in code) |
 | Module README | Structural changes in that module's source tree (new packages, components, services) — not line edits inside existing files |
 | Root README | Modules added/removed; app purpose changes (rare — mostly bootstrap-once) |
+| `docs/glossary.md` | Not git-diffable (source is uncommitted) — every update-docs run diffs current `.claude/context/CONTEXT.md` terms against `docs/glossary.md` and syncs additions/changes. |
 
 Plus two global rules, applied to every doc including ADRs:
 

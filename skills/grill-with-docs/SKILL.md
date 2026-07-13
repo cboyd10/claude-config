@@ -80,7 +80,9 @@ boundaries between concepts.
 
 ### CONTEXT.md — the domain glossary
 
-Look for `.claude/context/CONTEXT.md` in the repo. If `.claude/context/CONTEXT-MAP.md` exists, the repo has
+Look for `.claude/context/CONTEXT.md` in the repo. In a work repo, resolve the
+shared-doc root per `WORKTREE-CONTEXT.md` before any read or write in this
+section — `.claude/context/` is gitignored there. If `.claude/context/CONTEXT-MAP.md` exists, the repo has
 multiple bounded contexts — follow the map to the right `CONTEXT.md`.
 
 - When the user uses a term that conflicts with the glossary, call it out

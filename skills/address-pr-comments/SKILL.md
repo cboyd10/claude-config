@@ -33,7 +33,8 @@ Otherwise, before presenting anything to the user:
 1. Parse the review document to list all open comments (reviewer, file, line, text).
 2. Read every file and line referenced by those comments. Build an internal picture
    of what the reviewer is asking and what the code currently does.
-3. Read `.claude/context/CONTEXT.md` if it exists for domain context.
+3. Read `.claude/context/CONTEXT.md` if it exists for domain context. In a
+   work repo, resolve the shared-doc root per `WORKTREE-CONTEXT.md` first.
 
 Output a brief orientation summary (3–5 lines: PR title, branch, comment count,
 which files are touched). Do not dump file listings or raw comment text.

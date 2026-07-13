@@ -38,7 +38,9 @@ explicitly confirms the review in Phase 4.
      the glossary is **additive-only** (see Phase 3).
 3. Determine the git convention: `git ls-files .claude/context/` (or check whether
    `.claude/` is ignored). Tracked → this run ends in a commit, so
-   `git pull` first. Untracked → this run only writes files, no git ceremony.
+   `git pull` first. Untracked → this run only writes files, no git ceremony;
+   also resolve the shared-doc root per `../WORKTREE-CONTEXT.md` now — Phase 5
+   writes there instead of the current worktree.
 
 ### Phase 2: EXPLORE
 

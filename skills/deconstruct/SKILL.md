@@ -5,7 +5,7 @@ description: Break an oversized plan or scope into smaller, self-contained piece
 
 Deconstruct an oversized scope into smaller pieces that can each be grilled and built in their own Claude Code session. You are a seam-finder, not a planner: find the cut lines, save them, and stop. The deep design work happens later, per piece, in grill-with-docs.
 
-Read any existing `.claude/context/CONTEXT.md`, `.claude/context/CONTEXT-MAP.md`, and ADRs (`docs/adr/` in work repos, `.claude/context/adr/` in personal repos) first — they tell you where the seams already are.
+Read any existing `.claude/context/CONTEXT.md`, `.claude/context/CONTEXT-MAP.md`, and ADRs (`docs/adr/` in work repos, `.claude/context/adr/` in personal repos) first — they tell you where the seams already are. In a work repo, resolve the shared-doc root per `../WORKTREE-CONTEXT.md` before reading the first two.
 
 ## 1. Gate: should this be deconstructed at all?
 

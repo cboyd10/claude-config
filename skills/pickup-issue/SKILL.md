@@ -32,10 +32,11 @@ land in the phase it names, and delete the handoff once caught up.
 Otherwise, before asking the user anything, gather context:
 
 1. Read `.claude/context/CONTEXT.md` and `docs/adr/` (plus any legacy
-   `.claude/context/adr/`) if they exist.
-2. Check for `issues.csv` in the relevant planning directory (`.claude/jira-planning/`).
-   If found, read it for context on the issue being picked up and its dependencies
-   before exploring the codebase.
+   `.claude/context/adr/`) if they exist. In a work repo, resolve the
+   shared-doc root per `WORKTREE-CONTEXT.md` before this read.
+2. Check for `issues.csv` in the relevant planning directory (`.claude/jira-planning/`,
+   same resolved root as above). If found, read it for context on the issue
+   being picked up and its dependencies before exploring the codebase.
 3. Explore the code the issue most likely touches — data model, service layer, Helm
    charts, Angular components, whatever the description points at. Delegate this
    exploration per `grill-with-docs/EXPLORATION.md` (read it now, plus
@@ -139,7 +140,8 @@ the team's PR review.
 
 After implementation:
 
-1. Ensure `.claude/context/CONTEXT.md` reflects any new domain terms introduced.
+1. Ensure `.claude/context/CONTEXT.md` reflects any new domain terms introduced
+   (same resolved root as Phase 1).
 2. Do NOT write ADRs or product documentation (root `README.md`, `docs/`, module
    READMEs). Those are written by the lead's `update-docs` runs, which detect
    this issue's changes from the merged commits. If the work embodied a decision

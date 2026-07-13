@@ -44,7 +44,8 @@ hypothesis survives with demonstrated evidence.
    (paste from the user for Jira; MCP for GitHub) and look for an **INVESTIGATION
    LOG** from a previous debug session. If present, adopt its reproduction recipe
    and hypothesis ledger — never re-test a hypothesis it records as killed.
-2. Read `.claude/context/CONTEXT.md` if it exists. In a work repo, read
+2. Read `.claude/context/CONTEXT.md` if it exists. In a work repo, resolve the
+   shared-doc root per `../WORKTREE-CONTEXT.md` before this read, and read
    `STACK-WORK.md` in this skill directory now (plus
    `grill-with-docs/STACK-WORK.md` for exploration grounding). Personal repos skip
    both and infer the stack from the repo.

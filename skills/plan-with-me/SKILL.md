@@ -32,7 +32,9 @@ Phase 3 confirmation is explicitly given.
 
 Before asking the user anything, gather context yourself:
 
-1. Read `.claude/context/CONTEXT.md` (if it exists) — this is the domain glossary.
+1. Read `.claude/context/CONTEXT.md` (if it exists) — this is the domain
+   glossary. In a work repo, resolve the shared-doc root per
+   `WORKTREE-CONTEXT.md` before this and steps 2-3.
 2. Read `docs/adr/` and any legacy `.claude/context/adr/` (if they exist) —
    prior architectural decisions.
 3. Scan `.claude/jira-planning/` for past planning sessions relevant to this feature —

@@ -49,6 +49,8 @@ Otherwise, ask the intake questions one at a time, grill-with-docs style
 ### Phase 2: ORIENT
 
 1. Read `.claude/context/CONTEXT.md` and any repo `ORIENTATION.md` if present.
+   In a work repo, resolve the shared-doc root per `../WORKTREE-CONTEXT.md`
+   first.
 2. Detect the stack. For Angular, read `STACK-ANGULAR.md` in this skill
    directory now. For other stacks, apply the stack-agnostic rules below and
    mirror the Angular file's intent using that stack's conventions (dev-only
