@@ -88,8 +88,21 @@ Create the worktree and branch (sibling directory keeps the main working tree
 clean and allows concurrent agents to work different issues at once):
 
 ```bash
-git fetch origin
-git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} origin/{base-branch}
+git fetch origin {base-branch}
+git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} FETCH_HEAD
+```
+
+Fetching into `FETCH_HEAD` (rather than referencing `origin/{base-branch}` directly)
+works even when the remote has no fetch refspec configured for remote-tracking
+branches — a real condition in some bare-repo setups, where `origin/{base-branch}`
+is not a resolvable ref. It also avoids writing to the shared base-branch worktree,
+so it can't race with another concurrent session working there.
+
+If `git fetch origin {base-branch}` itself fails (offline, no such branch upstream),
+fall back to the local branch:
+
+```bash
+git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} {base-branch}
 ```
 
 Then work inside the worktree for all subsequent implementation. If the worktree
@@ -122,8 +135,9 @@ run by you:
 
 1. From the worktree, invoke Claude Code's bundled `code-review` skill (via the
    Skill tool) at medium effort against the branch diff
-   (`git diff origin/{base-branch}...HEAD`). If the bundled skill is unavailable
-   in this environment, do a manual correctness pass over the same diff instead.
+   (`git diff {base-branch}...HEAD`, using the local base branch — same reasoning
+   as Phase 4's `FETCH_HEAD` approach). If the bundled skill is unavailable in this
+   environment, do a manual correctness pass over the same diff instead.
 2. Triage the findings:
    - **Confirmed correctness bugs** — fix now. When the fix touches Angular or
      Spring Boot production code, go through `tdd` (failing test first); re-run
@@ -162,5 +176,8 @@ After implementation:
 - Never start Phase 4 without explicit alignment confirmation from Phase 3.
 - The branch name is always the exact Jira slug — no modification, no lowercasing.
 - If the issue scope is large enough to span multiple PRs, say so in Phase 3 and
-  propose splitting before creating the worktree.
+  propose splitting before creating the worktree. If scope is discovered mid-grilling
+  and split off rather than folded in, capture it in `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`
+  (same format `wrap-up/IMPLEMENTATION.md` defines) so it can seed its own
+  `/pickup-issue` session later, rather than losing the context.
 - The user can jump phases backward at any time. Honor it, then resume.
