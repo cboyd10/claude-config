@@ -59,6 +59,12 @@ Base URL: https://raw.githubusercontent.com/cboyd10/claude-config/main/skills
 **jira-formats**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/jira-formats/SKILL.md
 
+**learn**
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/learn/SKILL.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/learn/LESSON-FORMAT.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/learn/NOTES-FORMAT.md
+- https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/learn/SYLLABUS-FORMAT.md
+
 **pickup-issue**
 - https://raw.githubusercontent.com/cboyd10/claude-config/main/skills/pickup-issue/SKILL.md
 
