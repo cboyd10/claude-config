@@ -86,7 +86,11 @@ Keep orientation output brief — no file dumps.
    best taught (canonical texts, course outlines, pedagogical approaches), and
    which reputable sources anchor it. Reputable means primary/canonical texts,
    academic or institutional material, official documentation — not content
-   farms or SEO listicles.
+   farms or SEO listicles. The research must also settle the subject's
+   **modality** — how visual/interactive this subject is when taught well
+   (piano wants keyboard widgets and drills; history wants narrative prose)
+   and what its native widget types are — recorded as the `Modality:` line in
+   the syllabus per `SYLLABUS-FORMAT.md`.
 3. **Syllabus gate**: present in chat the fundamentals you found, the teaching
    approach you propose, and the first ~5 lesson titles. Iterate until the
    user approves. Do not write files before approval.
@@ -110,12 +114,30 @@ Keep orientation output brief — no file dumps.
 1. **Research this lesson's topic** against reputable sources before writing.
    Every load-bearing claim in the lesson must be traceable to a source that
    the lesson links.
-2. Write the full lesson to `lessons/NN-{lesson-slug}.html` per
-   `LESSON-FORMAT.md`: teach the core concepts in the lesson body and point at
-   the linked sources for depth and further reference.
-3. Update the subject's `index.html` and mark the lesson taught in
+2. **Read the subject's calibration** before writing: the `Modality:` line in
+   `SYLLABUS.md` (how visual/interactive this subject's lessons should be),
+   and the `Weak spots:` lines across past sessions in `NOTES.md` — they name
+   how this learner gets confused; write so those failure shapes can't recur.
+3. Write the full lesson to `lessons/NN-{lesson-slug}.html` per
+   `LESSON-FORMAT.md` (widget patterns in `WIDGETS.md`): teach the core
+   concepts in the lesson body and point at the linked sources for depth and
+   further reference.
+4. **Self-review gate.** Re-read the draft as the learner profile would, and
+   check every line of this list before presenting:
+   - every worked example states its setup and purpose before its mechanics;
+   - no unexplained leaps — each value/artifact is shown or explicitly
+     deferred with a pointer before it's used;
+   - state-changing-across-steps sections are steppers (and the stepper
+     replaced the prose trace); static structure has its diagram;
+   - terms of art are glossed inline on first use, per the learner profile;
+   - no `<script>` outside the WIDGETS.md enhancement pattern; every widget
+     fully works with scripts stripped;
+   - every load-bearing claim links a reputable source;
+   - nothing recreates a weak spot recorded in `NOTES.md`.
+   Fix what fails; don't present a draft that flunks its own checklist.
+5. Update the subject's `index.html` and mark the lesson taught in
    `SYLLABUS.md`'s lesson plan.
-4. In chat: post the objectives and a 3–5 line gist — never the whole lesson —
+6. In chat: post the objectives and a 3–5 line gist — never the whole lesson —
    and the file path to open (offer to open it in the browser when running on
    a desktop). Then enter REVIEW.
 
@@ -127,8 +149,10 @@ The Q&A loop. The user reads the lesson and asks questions; for each one:
 2. **Fold the answer into the lesson HTML immediately** — not batched at wrap.
    Place it inline in the section the question anchors to, marked as a Q&A
    fold per `LESSON-FORMAT.md`; only a question that anchors nowhere lands in
-   the end-of-file Q&A section. The point: future review of the lesson should
-   never provoke the same question twice.
+   the end-of-file Q&A section. If the answer is better shown than told (the
+   question traced steps or structure), fold it as a widget per `WIDGETS.md`
+   and let it replace any prose trace it supersedes. The point: future review
+   of the lesson should never provoke the same question twice.
 3. **If the question signals a future lesson**, append a seed to the syllabus
    backlog right then and say so in one line.
 4. **If the question or content crosses a subject boundary**, add the

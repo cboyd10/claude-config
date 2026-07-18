@@ -29,6 +29,11 @@ the lesson plan walks. 5–10 lines.}
 e.g. chronological narrative for history, drill-plus-immersion for language,
 build-things for technical. 3–6 lines, grounded in the onboarding research.}
 
+Modality: {interactive-first | worked-example-driven | text-forward} —
+{the subject's native widget types, e.g. "keyboard diagrams, chord/fingering
+steppers" or "state-trace steppers for every worked algorithm" or "narrative
+prose; maps/timelines where geography or chronology is load-bearing"}
+
 ## Lesson plan
 
 1. [x] {Lesson title} — {one line of scope} (taught {YYYY-MM-DD})
@@ -55,6 +60,12 @@ build-things for technical. 3–6 lines, grounded in the onboarding research.}
   untaught lessons; taught entries are history and never renumber.
 - **First ~5 lessons concrete, the rest coarse.** Detail crystallizes as the
   subject progresses; don't fake precision about lesson 12 at onboarding time.
+- **The `Modality:` line is required and set at onboarding.** ONBOARD's
+  research must explicitly determine how visual/interactive this subject is
+  when taught well and what its native widget types are; TEACH reads this
+  line before writing every lesson (see `LESSON-FORMAT.md` "Interactivity &
+  visuals"). Revise it if experience shows the subject teaches differently
+  than the research suggested.
 - **The backlog is where review questions grow into lessons.** A seed promoted
   into the plan is removed from the backlog. Seeds carry their provenance
   (which lesson's review, when) so a future session knows the context.
