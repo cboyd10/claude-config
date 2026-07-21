@@ -25,8 +25,11 @@ until Phase 3 alignment is explicitly confirmed by the user.
 
 ### Phase 1: INTAKE
 
-**Resume check (first):** if the worktree `../<repo>-worktrees/style-guide/`
-already exists and contains `.claude/style-guide/STATE.md`, this is a resumed
+**Resume check (first):** resolve the worktree directory per
+`../WORKTREE-LOCATION.md` (run `~/.claude/scripts/resolve-worktree-root.sh`;
+use `<bare-root>/style-guide` if it printed a path, else
+`../<repo>-worktrees/style-guide`). If that worktree already exists and
+contains `.claude/style-guide/STATE.md`, this is a resumed
 run. Read the state file, verify its claims against `git log`/`git status`,
 and land in the phase it implies: page built but not approved → Phase 6;
 approved but no brief → Phase 8. Do not redo phases the state file records
@@ -70,14 +73,14 @@ Otherwise, ask the intake questions one at a time, grill-with-docs style
 Summarize and ask the user to confirm: seed source, element scope (full
 checklist or the in-use subset, listed), the framework-replacement consequence
 if a styled UI framework was found (see General conduct), worktree path
-`../<repo>-worktrees/style-guide/`, branch `style-guide`, and base branch
+(resolved in Phase 1 per `../WORKTREE-LOCATION.md`), branch `style-guide`, and base branch
 (default `master`/`main` per repo). Iterate until explicitly confirmed.
 
 ### Phase 4: WORKTREE
 
 ```bash
 git fetch origin
-git worktree add -b style-guide ../<repo>-worktrees/style-guide origin/{base-branch}
+git worktree add -b style-guide {worktree-dir} origin/{base-branch}
 ```
 
 Work inside the worktree from here on. Create `.claude/style-guide/STATE.md`

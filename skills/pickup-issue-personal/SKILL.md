@@ -35,8 +35,11 @@ alignment is confirmed.
 
 ### Phase 1: ORIENT
 
-**Resumed pickup check (first):** if the worktree `../<repo>-worktrees/<slug>/`
-already exists and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
+**Resumed pickup check (first):** resolve the worktree directory per
+`WORKTREE-LOCATION.md` (run `~/.claude/scripts/resolve-worktree-root.sh` once
+now, reuse the result all session): `<bare-root>/<slug>/` if it printed a path,
+else `../<repo>-worktrees/<slug>/`. If that worktree already exists and
+contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
 resumed pickup. Follow the resume contract in `wrap-up/IMPLEMENTATION.md`: read the
 handoff, verify it against `git log`/`git status` and the PR's current state, skip
 re-grilling what it records as aligned (address "Not yet aligned" items first),
@@ -110,8 +113,9 @@ Summarize:
    script. State your call; the user can override.
 4. What is explicitly out of scope (carry over the issue's Out of Scope).
 5. The worktree slug, directory, and branch name, per `github-formats`:
-   slug `issue-<number>-<short-slug>`, directory `../<repo>-worktrees/<slug>/`, branch
-   = slug. Base branch defaults to `main` (use another if the user names one).
+   slug `issue-<number>-<short-slug>`, directory resolved in Phase 1 per
+   `WORKTREE-LOCATION.md`, branch = slug. Base branch defaults to `main` (use
+   another if the user names one).
 
 For downgrade/judgment `hitl`: ask for confirmation and iterate until explicit.
 For `afk` and human-step `hitl`: present this as the single go/no-go (for human-step
@@ -119,12 +123,13 @@ For `afk` and human-step `hitl`: present this as the single go/no-go (for human-
 
 ### Phase 4: WORKTREE
 
-Create the worktree and branch (sibling directory keeps concurrent agents isolated and
-out of the main working tree):
+Create the worktree and branch at the directory resolved in Phase 1 (a sibling
+directory, or inside the bare repo itself — see `WORKTREE-LOCATION.md`; either
+way it keeps concurrent agents isolated):
 
 ```bash
 git fetch origin
-git worktree add -b <slug> ../<repo>-worktrees/<slug> origin/<base-branch>
+git worktree add -b <slug> {worktree-dir} origin/<base-branch>
 ```
 
 Then `cd` into the worktree for all subsequent work. Via MCP, apply the `in-progress`
@@ -216,7 +221,7 @@ visible and CI starts, and continue implementing on the same branch.
 3. Confirm the worktree is reviewable: checks pass, no stray uncommitted changes.
 
 Optionally remind the user they can remove the worktree after merge:
-`git worktree remove ../<repo>-worktrees/<slug>`.
+`git worktree remove {worktree-dir}` (the directory resolved in Phase 1).
 
 If this session produced retro signal — an afk self-downgrade, corrections to
 your assumptions, or context the user had to re-explain — offer `/skill-retro`

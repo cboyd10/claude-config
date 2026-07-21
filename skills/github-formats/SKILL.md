@@ -132,9 +132,10 @@ Shared so concurrent agents never collide and humans can read directories at a g
 
 - **Slug**: `issue-<number>-<short-kebab-slug>`, e.g. `issue-42-add-oauth-login`.
   Derive the slug from the issue title; keep it short (3–5 words).
-- **Worktree directory**: a sibling of the repo, `../<repo>-worktrees/<slug>/`.
-  Outside the repo so worktrees never pollute the working tree or get scanned
-  recursively.
+- **Worktree directory**: resolved per `WORKTREE-LOCATION.md` (in
+  `~/.claude/skills/`) — a sibling of the repo, `../<repo>-worktrees/<slug>/`,
+  by default; inside the bare repo directory itself, `<bare-root>/<slug>/`,
+  when the repo is a bare-repo-and-worktrees setup.
 - **Branch name**: exactly the slug — `issue-<number>-<short-kebab-slug>`. No
   lowercasing changes, no modification once chosen.
 - **ADR filename**: `.claude/context/adr/issue-<number>-<topic-slug>.md`. The issue

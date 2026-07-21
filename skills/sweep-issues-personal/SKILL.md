@@ -53,9 +53,11 @@ Everything after `/sweep-issues-personal`, all optional:
 5. **Detect cycles**: any dependency cycle excludes its members (with a report entry
    telling the user to fix the issue text). Never guess an order through a cycle.
 6. **Detect interrupted work** (this is the resume path): a pool issue labeled
-   `in-progress` or `sweep-blocked`, or with an existing worktree
-   (`../<repo>-worktrees/issue-<n>-*`) or open draft PR, was started by a previous
-   run. Mark it for **resume dispatch** rather than fresh dispatch.
+   `in-progress` or `sweep-blocked`, or with an existing worktree (per
+   `WORKTREE-LOCATION.md`: `../<repo>-worktrees/issue-<n>-*`, or
+   `<bare-root>/issue-<n>-*` when the repo is a bare-repo-and-worktrees setup) or
+   open draft PR, was started by a previous run. Mark it for **resume dispatch**
+   rather than fresh dispatch.
 
 Output a compact plan — dispatchable now, waiting-on-what, excluded-and-why — then
 start the loop. Do not wait for approval; the `afk` labels are the approval.

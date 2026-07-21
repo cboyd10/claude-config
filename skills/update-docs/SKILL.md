@@ -130,8 +130,9 @@ yourself.
    the docs PR; a quick Improvement issue per `jira-formats` covers it). If
    STATE.md records an active branch from an in-progress effort, reuse that
    branch and worktree instead.
-2. Create the worktree and branch, exactly like pickup-issue:
-   `git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} origin/master`
+2. Create the worktree and branch, exactly like pickup-issue — resolve the
+   directory per `WORKTREE-LOCATION.md`:
+   `git worktree add -b {JIRA-SLUG} {worktree-dir} origin/master`
 3. Write the aligned docs per `docs-formats` templates; write ADRs per
    `ADR-FORMAT.md`, numbered sequentially in `docs/adr/`. When an ingested
    legacy ADR is rewritten, delete the old file from `.claude/context/adr/` in

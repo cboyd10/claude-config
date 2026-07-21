@@ -37,11 +37,14 @@ Before presenting anything to the user:
    clone URL, and every existing open comment/task thread. Those existing
    threads are **feedback already given** — do not duplicate them later.
 2. Create or reuse a worktree on the handoff's **source branch**, following the
-   pickup-issue convention:
+   pickup-issue convention. Resolve the worktree directory per
+   `WORKTREE-LOCATION.md` (run `~/.claude/scripts/resolve-worktree-root.sh`;
+   use `<bare-root>/{SOURCE-BRANCH}` if it printed a path, else
+   `../<repo>-worktrees/{SOURCE-BRANCH}`):
 
    ```bash
    git fetch origin
-   git worktree add ../<repo>-worktrees/{SOURCE-BRANCH} origin/{SOURCE-BRANCH}
+   git worktree add {worktree-dir} origin/{SOURCE-BRANCH}
    ```
 
    If the worktree path already exists, reuse it. Work inside it for the review.

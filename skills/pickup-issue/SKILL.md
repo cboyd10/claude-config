@@ -1,6 +1,6 @@
 ---
 name: pickup-issue
-description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a Git worktree (sibling directory) named after the slug, implements (using TDD for Angular/Spring Boot code changes), then self-reviews the diff via the bundled code-review skill before handing the branch over. Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
+description: Pick up a Jira issue for implementation. Accepts a Jira slug + summary/description, orients in the codebase, runs grill-with-docs to reach alignment, creates a Git worktree named after the slug (location per WORKTREE-LOCATION.md), implements (using TDD for Angular/Spring Boot code changes), then self-reviews the diff via the bundled code-review skill before handing the branch over. Use when the user says "I'm picking up [JIRA-SLUG]" or invokes /pickup-issue.
 ---
 
 # pickup-issue
@@ -22,8 +22,11 @@ Phase 3 alignment is explicitly confirmed by the user.
 
 ### Phase 1: ORIENT
 
-**Resumed pickup check (first):** if the worktree `../<repo>-worktrees/{JIRA-SLUG}/`
-already exists and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
+**Resumed pickup check (first):** resolve the worktree directory per
+`WORKTREE-LOCATION.md` (run `~/.claude/scripts/resolve-worktree-root.sh` once
+now, reuse the result all session): `<bare-root>/{JIRA-SLUG}/` if it printed a
+path, else `../<repo>-worktrees/{JIRA-SLUG}/`. If that worktree already exists
+and contains `.claude/wrap-up/IMPLEMENTATION-HANDOFF.md`, this is a
 resumed pickup. Follow the resume contract in `wrap-up/IMPLEMENTATION.md`: read the
 handoff, verify it against `git log`/`git status`, skip re-grilling what it records
 as aligned (address "Not yet aligned" items first), reuse the worktree in Phase 4,
@@ -76,7 +79,7 @@ Summarize the shared understanding:
 3. Whether TDD applies: **yes** if the change includes Angular or Spring Boot
    production code; **no** if the change is config, deployment, SQL, or docs only.
 4. What is explicitly out of scope.
-5. The worktree path (`../<repo>-worktrees/{JIRA-SLUG}/`), branch name (always
+5. The worktree path (resolved in Phase 1 per `WORKTREE-LOCATION.md`), branch name (always
    the exact Jira slug, e.g. `LNES-129`), and base branch (default: `master`;
    use any other branch the user specifies).
 
@@ -84,12 +87,14 @@ Ask the user to confirm. Iterate until explicit confirmation. Only then proceed.
 
 ### Phase 4: WORKTREE
 
-Create the worktree and branch (sibling directory keeps the main working tree
-clean and allows concurrent agents to work different issues at once):
+Create the worktree and branch at the directory resolved in Phase 1 (a sibling
+directory, or inside the bare repo itself — see `WORKTREE-LOCATION.md`; either
+way it keeps concurrent agents isolated so they can work different issues at
+once):
 
 ```bash
 git fetch origin {base-branch}
-git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} FETCH_HEAD
+git worktree add -b {JIRA-SLUG} {worktree-dir} FETCH_HEAD
 ```
 
 Fetching into `FETCH_HEAD` (rather than referencing `origin/{base-branch}` directly)
@@ -102,7 +107,7 @@ If `git fetch origin {base-branch}` itself fails (offline, no such branch upstre
 fall back to the local branch:
 
 ```bash
-git worktree add -b {JIRA-SLUG} ../<repo>-worktrees/{JIRA-SLUG} {base-branch}
+git worktree add -b {JIRA-SLUG} {worktree-dir} {base-branch}
 ```
 
 Then work inside the worktree for all subsequent implementation. If the worktree
@@ -165,7 +170,7 @@ After implementation:
 3. Confirm the worktree is in a reviewable state: tests pass, static analysis
    clean, no uncommitted changes. Optionally remind the user they can remove the
    worktree after the branch is merged:
-   `git worktree remove ../<repo>-worktrees/{JIRA-SLUG}`.
+   `git worktree remove {worktree-dir}` (the directory resolved in Phase 1).
 4. If this session produced retro signal — corrections to your assumptions,
    context the user had to re-explain, or grilling questions the issue text
    should have pre-answered — offer `/skill-retro` before closing. Skip the

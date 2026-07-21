@@ -138,8 +138,9 @@ yourself.
    `issue-<number>-update-docs`; if they'd rather skip the issue, use
    `docs-update-YYYY-MM-DD`. If STATE.md records an active branch from an
    in-progress effort, reuse that branch and worktree instead.
-2. Create the worktree and branch, exactly like pickup-issue-personal:
-   `git worktree add -b <slug> ../<repo>-worktrees/<slug> origin/main`
+2. Create the worktree and branch, exactly like pickup-issue-personal —
+   resolve the directory per `WORKTREE-LOCATION.md`:
+   `git worktree add -b <slug> {worktree-dir} origin/main`
 3. Write the aligned docs per the docs-formats templates with the
    docs-formats-personal substitutions; write ADRs per `ADR-FORMAT.md` into
    `.claude/context/adr/`, named per `github-formats`.

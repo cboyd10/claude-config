@@ -15,6 +15,14 @@ Templates and conventions derived from the team's real issues. Match them exactl
 - **Improvement** — non-behavioral enhancement to the codebase or user experience. Use for stylistic changes, small refactors, and other changes that do not affect existing behavior or features. Title: imperative description of what is being improved.
 - **Sub-task** — created under a story only when the story's estimate exceeds 6 hours. Sub-tasks exist to break that work into pieces that can each be completed in 6 hours or less.
 
+## Worktree directory
+
+Resolved per `WORKTREE-LOCATION.md` (in `~/.claude/skills/`) — a sibling of the
+repo, `../<repo>-worktrees/{JIRA-SLUG}/`, by default; inside the bare repo
+directory itself, `<bare-root>/{JIRA-SLUG}/`, when the repo is a
+bare-repo-and-worktrees setup. Branch name is always the exact Jira slug. Used
+by `pickup-issue` and `update-docs`.
+
 ## Formatting conventions (all issue types)
 
 - **No Unicode special characters.** Use only ASCII in issue content. Never use arrows (→, ←, ↑, ↓), em dashes (—), or smart/curly quotes — Jira renders these as `?`. Replace arrows with plain words (`to`, `from`, `then`, `via`); replace em dashes with ` - ` (space-hyphen-space).

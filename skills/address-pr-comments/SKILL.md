@@ -83,11 +83,14 @@ Verify you are on the correct branch (should match the PR source branch).
 
 If already in the right worktree, proceed directly to Phase 5.
 
-If not, check out or create the worktree:
+If not, resolve the worktree directory per `WORKTREE-LOCATION.md` (run
+`~/.claude/scripts/resolve-worktree-root.sh`; use `<bare-root>/{BRANCH}` if it
+printed a path, else `../<repo>-worktrees/{BRANCH}`), then check out or create
+the worktree there:
 
 ```bash
 git fetch origin
-git worktree add ../<repo>-worktrees/{BRANCH} origin/{BRANCH}
+git worktree add {worktree-dir} origin/{BRANCH}
 ```
 
 Work inside the worktree for all subsequent implementation.
