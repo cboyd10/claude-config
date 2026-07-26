@@ -15,9 +15,15 @@ skill is the mechanics of pushing; `github-formats` is the format of record.
 
 ## Preconditions
 
-1. **GitHub MCP must be connected.** If it is not, stop and tell the user:
-   "GitHub MCP is not connected — enable it in your connectors and retry." Do not fall
-   back to writing files. GitHub is the source of truth for personal projects.
+1. **Prefer the `gh` CLI** for creating issues and labels — `gh issue create --repo
+   <owner>/<repo> --title ... --label ... --body-file ...` and `gh label
+   list`/`gh label create` to ensure labels exist. Confirm `gh auth status` shows
+   an active account before creating anything. Fall back to the GitHub MCP only
+   if `gh` isn't installed/authenticated; if neither `gh` nor MCP is available,
+   stop and tell the user: "Neither the gh CLI nor GitHub MCP is available —
+   install/authenticate gh, or enable the connector, and retry." Do not fall back
+   to writing local files in any case — GitHub is the source of truth for
+   personal projects.
 2. **The breakdown must be confirmed.** Never reach this skill without explicit Phase 3
    confirmation from `plan-with-me-personal`.
 3. **Know the target repo.** If the working directory's `origin` remote makes it

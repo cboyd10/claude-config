@@ -113,6 +113,10 @@ to build its dispatch graph and written by `plan-to-github`:
   (`Related: #<number>`), which the sweep ignores.
 - This text convention is the sole signal: the GitHub MCP does not expose native
   blocked-by relationships (adopting them when it does is a ROADMAP seed).
+- **Cross-repo blockers** (e.g. an app repo depending on an infra repo, or vice
+  versa): use GitHub's native cross-repo reference syntax, `Depends on
+  <owner>/<repo>#<number>`, on its own line — same rule, just qualified with the
+  other repo's full name.
 
 ## Labels
 
